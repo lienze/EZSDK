@@ -1,14 +1,19 @@
 #include <iostream>
 #include "EZFile.h"
 
-using std::cout;
-using std::endl;
-
-using EZ::CFile;
 
 int main()
 {
-    CFile f;
-    std::cout << "Hello world" << endl;
-    return 0;
+	EZ::CReadFile fFile;
+	int iRet = fFile.FileOpen("./test.txt");
+	if(iRet == 1)
+	{
+		while(!(fFile.GetFin())->eof())
+		{
+			std::string szContent;
+			fFile.GetLine(szContent);
+			std::cout << szContent << std::endl;
+		}
+	}
+	return 0;
 }
