@@ -35,8 +35,18 @@ public:
 		return true;
 	}
 	void GetLine(std::string &_szTmp){
-		if (fin)
+		if (fin.is_open())
 			getline(fin, _szTmp);
+	}
+	bool SetFilePtrToHead(){
+		if (fin.is_open())
+			fin.seekg(0, std::ios::beg);
+		return true;
+	}
+	bool SetFilePtrToEnd(){
+		if (fin.is_open())
+			fin.seekg(0, std::ios::end);
+		return true;
 	}
 	std::ifstream *GetFin() { return &fin; }
 private:
