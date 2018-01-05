@@ -58,8 +58,22 @@ class CSaveFile:public CFile
 public:
 	CSaveFile() {};
 	~CSaveFile() {};
-	FileRetType FileOpen(std::string _path);
-	bool FileClose();
+	FileRetType FileOpen(std::string _path){
+		fout.open(_path, std::ios::app);
+		if (fout.fail())
+			return CAN_NOT_OPEN_READ_FILE;
+		else
+			return OPEN_FILE_SUCCEED;
+	}
+	bool FileClose(){
+		fout.clear();
+		fout.close();
+		return true;
+	}
+	void SaveLine(std::string &_szTmp) {
+		if (fout.is_open())
+			fout << _szTmp;
+	}
 private:
 	std::fstream fout;
 };

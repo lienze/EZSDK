@@ -4,7 +4,7 @@
 
 int main()
 {
-	EZ::CReadFile fFile;
+	/*EZ::CReadFile fFile;
 	int iRet = fFile.FileOpen("./test.txt");
 	if(iRet == 1)
 	{
@@ -20,6 +20,15 @@ int main()
 			fFile.GetLine(szContent);
 			std::cout << szContent << std::endl;
 		}
+	}*/
+
+	EZ::CSaveFile fFile;
+	int iRet = fFile.FileOpen("./test.txt");
+	if (iRet == 1)
+	{
+		std::string szContent = "Hello world";
+		fFile.SaveLine(szContent);
+		fFile.FileClose();
 	}
 	return 0;
 }
