@@ -4,7 +4,7 @@
 
 int main()
 {
-	/*EZ::CReadFile fFile;
+	/*EZ::EZReadFile fFile;
 	int iRet = fFile.FileOpen("./test.txt");
 	if(iRet == 1)
 	{
@@ -22,7 +22,7 @@ int main()
 		}
 	}*/
 
-	EZ::CSaveFile fFile;
+	EZ::EZSaveFile fFile;
 	int iRet = fFile.FileOpen("./test.txt");
 	if (iRet == 1)
 	{

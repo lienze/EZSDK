@@ -3,11 +3,11 @@
 #include <string>
 
 namespace EZ{
-class CFile
+class EZFileBase
 {
 public:
-	CFile(){}
-	~CFile(){}
+	EZFileBase(){}
+	~EZFileBase(){}
 	enum FileRetType{
 		CAN_NOT_OPEN_READ_FILE = -1,
 		CAN_NOT_OPEN_SAVE_FILE = -2,
@@ -17,11 +17,11 @@ public:
 	virtual bool FileClose() = 0;
 };
 
-class CReadFile:public CFile
+class EZReadFile:public EZFileBase
 {
 public:
-	CReadFile() {};
-	~CReadFile() {};
+	EZReadFile() {};
+	~EZReadFile() {};
 	FileRetType FileOpen(std::string _path){
 		fin.open(_path, std::ios::in);
 		if (fin.fail())
@@ -53,11 +53,11 @@ private:
 	std::ifstream fin;
 };
 
-class CSaveFile:public CFile
+class EZSaveFile:public EZFileBase
 {
 public:
-	CSaveFile() {};
-	~CSaveFile() {};
+	EZSaveFile() {};
+	~EZSaveFile() {};
 	FileRetType FileOpen(std::string _path){
 		fout.open(_path, std::ios::app);
 		if (fout.fail())
