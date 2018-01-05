@@ -36,7 +36,14 @@ void TestEZSaveFile(){
 void TestEZString(){
 	EZ::EZString szStr;
 	szStr = "Hello";
-	std::cout << szStr.content();
+	std::cout << szStr.content() << std::endl;
+
+	EZ::EZStringList szStrList;
+	std::string szText = "Hello";
+	szStrList.AddInTail(szText);
+	std::string szText1 = "Hello1";
+	szStrList.AddInTail(szText1);
+	printf("%s", szStrList[1]->content().c_str());
 }
 
 
