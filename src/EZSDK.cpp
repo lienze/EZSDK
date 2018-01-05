@@ -42,8 +42,13 @@ void TestEZString(){
 	std::string szText = "Hello";
 	szStrList.AddInTail(szText);
 	std::string szText1 = "Hello1";
-	szStrList.AddInTail(szText1);
-	printf("%s", szStrList[1]->content().c_str());
+	szStrList.AddInHead(szText1);
+	std::string szText2 = "Hello2";
+	szStrList.AddInHead(szText2);
+	printf("%s %s %s\n", 
+		szStrList[0]->content().c_str(),
+		szStrList[1]->content().c_str(),
+		szStrList[2]->content().c_str());
 }
 
 

@@ -55,26 +55,31 @@ public:
 	}
 	bool AddInTail(std::string &_szTmp){
 		if(pHead==NULL){
-			pHead = new EZStringListNode;
-			pHead->pPreNode = NULL;
-			pHead->ez_str = _szTmp;
-			pHead->pNextNode = NULL;
-			pCurr = pHead;
-			pTail = pHead;
-			iNodeNum++;
+			createList(_szTmp);
 		}else{
-			pCurr->pNextNode = new EZStringListNode;
-			pCurr->pNextNode->pPreNode = pCurr;
-			pCurr = pCurr->pNextNode;
+			pTail->pNextNode = new EZStringListNode;
+			pCurr = pTail->pNextNode;
+			pCurr->pPreNode = pTail;
 			pCurr->pNextNode = NULL;
 			pTail = pCurr;
-			pCurr->ez_str = _szTmp;
+			pTail->ez_str = _szTmp;
 			iNodeNum++;
 		}
 		return true;
 	}
 	bool AddInHead(std::string &_szTmp){
-
+		if (pHead == NULL) {
+			createList(_szTmp);
+		}
+		else {
+			pHead->pPreNode = new EZStringListNode;
+			pCurr = pHead->pPreNode;
+			pCurr->pPreNode = NULL;
+			pCurr->pNextNode = pHead;
+			pHead = pCurr;
+			pHead->ez_str = _szTmp;
+			iNodeNum++;
+		}
 		return true;
 	}
 private:
@@ -82,5 +87,16 @@ private:
 	EZStringListNode * pCurr;
 	EZStringListNode * pTail;
 	int iNodeNum;
+private:
+	bool createList(std::string &_szTmp){
+		pHead = new EZStringListNode;
+		pHead->pPreNode = NULL;
+		pHead->ez_str = _szTmp;
+		pHead->pNextNode = NULL;
+		pCurr = pHead;
+		pTail = pHead;
+		iNodeNum++;
+		return true;
+	}
 };
 }//end namespace EZ
