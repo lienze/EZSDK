@@ -9,7 +9,7 @@ class EZStringList;
 class EZString
 {
 public:
-	EZString() {}
+	EZString() { basic_str = ""; }
 	~EZString(){}
 	EZString(std::string &_szTmp){
 		basic_str = _szTmp;
@@ -20,6 +20,7 @@ public:
 	std::string content(){
 		return basic_str;
 	}
+	EZStringList split(const char &_cTmp);
 
 private:
 	std::string basic_str;
@@ -99,4 +100,21 @@ private:
 		return true;
 	}
 };
+
+//Class implementation for EZString::split function
+//in order to solve recursive call
+EZStringList EZString::split(const char &_cTmp){
+	int _iFrom = 0;
+	int _iDis  = 0;
+	int _iPos  = 0;
+	EZStringList _tmpList;// = new EZStringList();
+	while((_iPos=basic_str.find(_cTmp,_iFrom))!=std::string::npos){
+		_iDis = _iPos - _iFrom;
+		printf("Dis:%d %d %d\n",_iFrom,_iDis,_iPos);
+		std::string tmp = basic_str.substr(_iFrom,_iDis);
+		_tmpList.AddInTail(tmp);
+		_iFrom = _iPos + 1;
+	}
+	return _tmpList;
+}
 }//end namespace EZ

@@ -51,9 +51,20 @@ void TestEZString(){
 		szStrList[2]->content().c_str());
 }
 
+void TestEZStringSplitFunc(){
+	std::string szText = "abc,1,2,999";
+	EZ::EZString ez_string = szText;
+	EZ::EZStringList ez_str_list = ez_string.split(',');
+	//std::cout << ez_str_list[0]->content();
+	printf("%s %s %s\n",
+		ez_str_list[0]->content().c_str(),
+		ez_str_list[1]->content().c_str(),
+		ez_str_list[2]->content().c_str());
+}
+
 
 int main()
 {
-	TestEZString();
+	TestEZStringSplitFunc();
 	return 0;
 }
