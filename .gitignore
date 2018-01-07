@@ -33,6 +33,7 @@
 
 # vs
 .vs
+.vscode
 Debug
 Release
 EZSDK
