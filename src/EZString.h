@@ -110,10 +110,13 @@ EZStringList EZString::split(const char &_cTmp){
 	EZStringList _tmpList;// = new EZStringList();
 	while((_iPos=basic_str.find(_cTmp,_iFrom))!=std::string::npos){
 		_iDis = _iPos - _iFrom;
-		printf("Dis:%d %d %d\n",_iFrom,_iDis,_iPos);
 		std::string tmp = basic_str.substr(_iFrom,_iDis);
 		_tmpList.AddInTail(tmp);
 		_iFrom = _iPos + 1;
+	}
+	if(_iFrom < basic_str.length()-1){
+		std::string tmp = basic_str.substr(_iFrom);
+		_tmpList.AddInTail(tmp);
 	}
 	return _tmpList;
 }
