@@ -9,19 +9,32 @@ class EZTime
 public:
 	EZTime(){}
 	~EZTime(){}
-	std::tm *GetCurrentTime(){
+	std::tm *GetTime(){
 		time(&raw_time);
 		t_time = localtime(&raw_time);
 		return t_time;
 	}
-	int GetCurrentYear(){
-		return GetCurrentTime()->tm_year + 1900;
+	int GetYear(){
+		return GetTime()->tm_year + 1900;
 	}
-	int GetCurrentMonth(){
-		return GetCurrentTime()->tm_mon + 1;
+	int GetMonth(){
+		return GetTime()->tm_mon + 1;
 	}
-	int GetCurrentDay(){
-		return GetCurrentTime()->tm_mday;
+	int GetDay(){
+		return GetTime()->tm_mday;
+	}
+	int GetWeekDay(){
+		int iWeekDayTmp = 0;
+		return (iWeekDayTmp = GetTime()->tm_wday)==0?7:iWeekDayTmp;
+	}
+	int GetHour(){
+		return GetTime()->tm_hour;
+	}
+	int GetMinutes(){
+		return GetTime()->tm_min;
+	}
+	int GetSeconds(){
+		return GetTime()->tm_sec;
 	}
 private:
 	time_t raw_time;

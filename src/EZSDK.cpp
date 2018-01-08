@@ -66,9 +66,13 @@ void TestEZStringSplitFunc(){
 
 void TestEZTime(){
 	EZ::EZTime _time;
-	std::cout << _time.GetCurrentYear() << std::endl;
-	std::cout << _time.GetCurrentMonth() << std::endl;
-	std::cout << _time.GetCurrentDay() << std::endl;
+	std::cout << _time.GetYear() << std::endl;
+	std::cout << _time.GetMonth() << std::endl;
+	std::cout << _time.GetDay() << std::endl;
+	std::cout << _time.GetWeekDay() << std::endl;
+	std::cout << _time.GetHour() << std::endl;
+	std::cout << _time.GetMinutes() << std::endl;
+	std::cout << _time.GetSeconds() << std::endl;
 }
 
 
