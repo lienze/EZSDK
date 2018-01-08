@@ -1,6 +1,7 @@
 #include <iostream>
 #include "EZFile.h"
 #include "EZString.h"
+#include "EZTime.h"
 
 void TestEZReadFile() {
 	EZ::EZReadFile fFile;
@@ -63,9 +64,16 @@ void TestEZStringSplitFunc(){
 		ez_str_list[3]->content().c_str());
 }
 
+void TestEZTime(){
+	EZ::EZTime _time;
+	std::cout << _time.GetCurrentYear() << std::endl;
+	std::cout << _time.GetCurrentMonth() << std::endl;
+	std::cout << _time.GetCurrentDay() << std::endl;
+}
+
 
 int main()
 {
-	TestEZStringSplitFunc();
+	TestEZTime();
 	return 0;
 }

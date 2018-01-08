@@ -9,7 +9,7 @@ class EZStringList;
 class EZString
 {
 public:
-	EZString() { basic_str = ""; }
+	EZString(){}
 	~EZString(){}
 	EZString(std::string &_szTmp){
 		basic_str = _szTmp;
