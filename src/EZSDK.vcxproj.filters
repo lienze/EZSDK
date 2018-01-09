@@ -29,5 +29,8 @@
     <ClInclude Include="EZTime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EZMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
