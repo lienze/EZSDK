@@ -106,6 +106,7 @@
   <ItemGroup>
     <ClInclude Include="EZFile.h" />
     <ClInclude Include="EZString.h" />
+    <ClInclude Include="EZTime.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
