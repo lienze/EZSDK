@@ -35,15 +35,12 @@ void TestEZSaveFile(){
 }
 
 void TestEZRemoveFile() {
-	EZ::EZSaveFile fFile;
-	int iRet = fFile.FileOpen("./test.txt");
-	if (iRet == 1)
-	{
-		std::string szContent = "Hello world";
-		fFile.SaveLine(szContent);
-		fFile.FileClose();
-	}
+	EZ::EZFileBase::CreateFile("./test.txt");
 	EZ::EZFileBase::RemoveFile("./test.txt");
+}
+
+void TestEZCreateFile(){
+	EZ::EZFileBase::CreateFile("./aaa.txt");
 }
 
 void TestEZString(){
@@ -90,6 +87,6 @@ void TestEZTime(){
 
 int main()
 {
-	TestEZRemoveFile();
+	TestEZCreateFile();
 	return 0;
 }

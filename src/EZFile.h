@@ -10,15 +10,27 @@ class EZFileBase
 public:
 	EZFileBase(){}
 	~EZFileBase(){}
-	enum FileRetType{
+	enum FileRetType {
 		CAN_NOT_OPEN_READ_FILE = -1,
 		CAN_NOT_OPEN_SAVE_FILE = -2,
+		CAN_NOT_CREATE_FILE    = -3,
+		CREATE_FILE_SUCCEED    =  1,
 		OPEN_FILE_SUCCEED      =  1,
 	};
 	virtual FileRetType FileOpen(std::string _path) = 0;
 	virtual bool FileClose() = 0;
 	static bool RemoveFile(std::string _path){
 		return remove(_path.c_str());
+	}
+	static bool CreateFile(std::string _path){
+		std::ofstream ofile;
+		ofile.open(_path, std::ios::out);
+		if (ofile.fail())
+			return CAN_NOT_CREATE_FILE;
+		else
+			return CREATE_FILE_SUCCEED;
+		ofile.clear();
+		ofile.close();
 	}
 };
 
