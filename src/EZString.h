@@ -104,9 +104,7 @@ private:
 //Class implementation for EZString::split function
 //in order to solve recursive call
 EZStringList EZString::split(const char &_cTmp){
-	int _iFrom = 0;
-	int _iDis  = 0;
-	int _iPos  = 0;
+	int _iFrom = 0, _iDis = 0, _iPos = 0;
 	EZStringList _tmpList;// = new EZStringList();
 	while((_iPos=basic_str.find(_cTmp,_iFrom))!=std::string::npos){
 		_iDis = _iPos - _iFrom;
