@@ -17,6 +17,9 @@ public:
 	};
 	virtual FileRetType FileOpen(std::string _path) = 0;
 	virtual bool FileClose() = 0;
+	static bool RemoveFile(std::string _path){
+		return remove(_path.c_str());
+	}
 };
 
 class EZReadFile:public EZFileBase
