@@ -61,6 +61,12 @@ void TestEZString(){
 		szStrList[2]->content().c_str());
 }
 
+void TestEZStringWithOperator(){
+	EZ::EZString szStr;
+	szStr = "Hello";
+	printf("%s\n",szStr["0:3"].content().c_str());
+}
+
 void TestEZStringSplitFunc(){
 	std::string szText = "abc,1,2,999";
 	EZ::EZString ez_string = szText;
@@ -87,6 +93,6 @@ void TestEZTime(){
 
 int main()
 {
-	TestEZCreateFile();
+	TestEZStringWithOperator();
 	return 0;
 }

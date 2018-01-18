@@ -17,6 +17,20 @@ public:
 	void operator=(const std::string &_szTmp){
 		basic_str = _szTmp;
 	}
+	EZString operator[](const std::string &_szTmp){
+		int _iFrom = 0, _iDis = 0, _iPos = 0;
+		EZString tmpReturnStr;
+		if((_iPos=_szTmp.find(":"))==std::string::npos)
+			return tmpReturnStr;
+		_iDis = _iPos - _iFrom;
+		std::string _szFromPos = _szTmp.substr(_iFrom,_iDis);
+		std::string _szToPos   = _szTmp.substr(_iPos+1);
+		_iFrom = atoi(_szFromPos.c_str());
+		_iPos  = atoi(_szToPos.c_str());
+		_iDis  = _iPos - _iFrom + 1;
+		tmpReturnStr = basic_str.substr(_iFrom,_iDis);
+		return tmpReturnStr;
+	}
 	std::string content(){
 		return basic_str;
 	}
