@@ -35,7 +35,9 @@ public:
 		return basic_str;
 	}
 	EZStringList split(const char &_cTmp);
-
+	inline int GetLength() const{
+		return basic_str.length();
+	}
 private:
 	std::string basic_str;
 };
