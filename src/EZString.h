@@ -97,6 +97,19 @@ public:
 		}
 		return true;
 	}
+	inline int GetSize() const{
+		return iNodeNum;
+	}
+	bool DeleteAll(){
+		while(pHead!=pTail){
+			pCurr = pTail->pPreNode;
+			delete pTail;
+			pTail = pCurr;
+		}
+		delete pHead;
+		pHead = pCurr = pTail = NULL;
+		iNodeNum = 0;
+	}
 private:
 	EZStringListNode * pHead;
 	EZStringListNode * pCurr;
