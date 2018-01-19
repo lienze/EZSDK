@@ -111,6 +111,7 @@ public:
 		delete pHead;
 		pHead = pCurr = pTail = NULL;
 		iNodeNum = 0;
+		return true;
 	}
 private:
 	EZStringListNode * pHead;
