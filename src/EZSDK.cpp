@@ -67,6 +67,14 @@ void TestEZStringWithOperator(){
 	printf("%s\n",szStr["0:3"].content().c_str());
 }
 
+void TestEZStringWithOperatorPlus(){
+	EZ::EZString szStr1,szStr2;
+	szStr1 = "Good";
+	szStr2 = "Well";
+	EZ::EZString res = szStr1 + szStr2;
+	printf("%s\n",res.content().c_str());
+}
+
 void TestEZStringSplitFunc(){
 	std::string szText = "abc,1,2,999";
 	EZ::EZString ez_string = szText;
@@ -93,6 +101,6 @@ void TestEZTime(){
 
 int main()
 {
-	TestEZStringWithOperator();
+	TestEZStringWithOperatorPlus();
 	return 0;
 }

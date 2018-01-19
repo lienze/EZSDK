@@ -31,6 +31,11 @@ public:
 		tmpReturnStr = basic_str.substr(_iFrom,_iDis);
 		return tmpReturnStr;
 	}
+	EZString operator+(EZString &_szForAdd){
+		EZString tmpReturnStr;
+		tmpReturnStr = basic_str + _szForAdd.content().c_str();
+		return tmpReturnStr;
+	}
 	std::string content(){
 		return basic_str;
 	}
