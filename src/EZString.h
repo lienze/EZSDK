@@ -19,22 +19,22 @@ public:
 	}
 	EZString operator[](const std::string &_szTmp){
 		int _iFrom = 0, _iDis = 0, _iPos = 0;
-		EZString tmpReturnStr;
+		EZString __tmpReturnStr;
 		if((_iPos=_szTmp.find(":"))==std::string::npos)
-			return tmpReturnStr;
+			return __tmpReturnStr;
 		_iDis = _iPos - _iFrom;
 		std::string _szFromPos = _szTmp.substr(_iFrom,_iDis);
 		std::string _szToPos   = _szTmp.substr(_iPos+1);
 		_iFrom = atoi(_szFromPos.c_str());
 		_iPos  = atoi(_szToPos.c_str());
 		_iDis  = _iPos - _iFrom + 1;
-		tmpReturnStr = basic_str.substr(_iFrom,_iDis);
-		return tmpReturnStr;
+		__tmpReturnStr = basic_str.substr(_iFrom,_iDis);
+		return __tmpReturnStr;
 	}
 	EZString operator+(EZString &_szForAdd){
-		EZString tmpReturnStr;
-		tmpReturnStr = basic_str + _szForAdd.content().c_str();
-		return tmpReturnStr;
+		EZString __tmpReturnStr;
+		__tmpReturnStr = basic_str + _szForAdd.content().c_str();
+		return __tmpReturnStr;
 	}
 	std::string content(){
 		return basic_str;
