@@ -198,7 +198,7 @@ EZStringList EZString::split(const char &_cTmp){
 		_tmpList.AddInTail(tmp);
 		_iFrom = _iPos + 1;
 	}
-	if(_iFrom < basic_str.length()-1){
+	if(_iFrom <= basic_str.length()){
 		std::string tmp = basic_str.substr(_iFrom);
 		_tmpList.AddInTail(tmp);
 	}
