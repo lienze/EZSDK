@@ -52,6 +52,15 @@ struct EZStringListNode
 	EZStringListNode *pPreNode;
 	EZString ez_str;
 	EZStringListNode *pNextNode;
+	EZStringListNode(){
+		pPreNode = NULL;
+		pNextNode = NULL;
+	}
+	EZStringListNode(std::string &_szTmp){
+		pPreNode = NULL;
+		ez_str = _szTmp;
+		pNextNode = NULL;
+	}
 };
 
 class EZStringList
@@ -91,7 +100,7 @@ public:
 	}
 	bool AddInHead(std::string &_szTmp){
 		if (pHead == NULL) {
-			createList(_szTmp);
+			return createList(_szTmp);
 		}
 		else {
 			pHead->pPreNode = new EZStringListNode;
@@ -103,6 +112,48 @@ public:
 			iNodeNum++;
 		}
 		return true;
+	}
+	bool InsertAt(int _iPos,std::string &_szTmp){
+		if(pHead == NULL){
+			return createList(_szTmp);
+		}else{
+			if(_iPos<0 || _iPos>iNodeNum)return false;
+			int _i=0;
+			pCurr = pHead;
+			while(_i<_iPos){
+				if(pCurr && pCurr->pNextNode){
+					pCurr = pCurr->pNextNode;
+					_i++;
+				}else{
+					return false;
+				}
+			}
+			assert(pCurr!=NULL);
+			EZStringListNode * _pNodeTmp = new EZStringListNode(_szTmp);
+			if(_i == 0){
+				if(pCurr->pPreNode == NULL){//Head Node
+					pCurr->pPreNode = _pNodeTmp;
+					pHead = _pNodeTmp;
+					_pNodeTmp->pNextNode = pCurr;
+					iNodeNum++;
+				}else{
+					delete _pNodeTmp;
+					return false;
+				}
+			}else{
+				if(pCurr->pPreNode != NULL){
+					pCurr->pPreNode->pNextNode = _pNodeTmp;
+					_pNodeTmp->pPreNode = pCurr->pPreNode;
+					_pNodeTmp->pNextNode = pCurr;
+					pCurr->pPreNode = _pNodeTmp;
+					iNodeNum++;
+				}else{
+					delete _pNodeTmp;
+					return false;
+				}
+			}
+			return true;
+		}
 	}
 	inline int GetSize() const{
 		return iNodeNum;

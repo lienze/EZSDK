@@ -87,6 +87,19 @@ void TestEZStringSplitFunc(){
 		ez_str_list[3]->content().c_str());
 }
 
+void TestEZStringListInsert(){
+	std::string szText = "abc,1,2";
+	EZ::EZString ez_string = szText;
+	EZ::EZStringList ez_str_list = ez_string.split(',');
+	std::string ss = "aaa";
+	ez_str_list.InsertAt(0,ss);
+	printf("%s %s %s %s\n",
+		ez_str_list[0]->content().c_str(),
+		ez_str_list[1]->content().c_str(),
+		ez_str_list[2]->content().c_str(),
+		ez_str_list[3]->content().c_str());
+}
+
 void TestEZTime(){
 	EZ::EZTime _time;
 	std::cout << _time.GetYear() << std::endl;
@@ -101,6 +114,6 @@ void TestEZTime(){
 
 int main()
 {
-	TestEZStringWithOperatorPlus();
+	TestEZStringListInsert();
 	return 0;
 }
