@@ -4,6 +4,14 @@
 #include <fstream>
 #include <string>
 
+#define OFSTREAMCLOSE(F) \
+    do                   \
+    {                    \
+        F.clear();       \
+        F.close();       \
+    } while(0)           \
+
+
 namespace EZ{
 class EZFileBase
 {
@@ -26,13 +34,11 @@ public:
 		std::ofstream ofile;
 		ofile.open(_path, std::ios::out);
 		if (ofile.fail()) {
-			ofile.clear();
-			ofile.close();
+			OFSTREAMCLOSE(ofile);
 			return CAN_NOT_CREATE_FILE;
 		}
 		else {
-			ofile.clear();
-			ofile.close();
+			OFSTREAMCLOSE(ofile);
 			return CREATE_FILE_SUCCEED;
 		}
 	}
