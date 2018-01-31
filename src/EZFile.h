@@ -22,15 +22,19 @@ public:
 	static bool RemoveFile(std::string _path){
 		return remove(_path.c_str());
 	}
-	static bool CreateFile(std::string _path){
+	static FileRetType CreateFile(std::string _path){
 		std::ofstream ofile;
 		ofile.open(_path, std::ios::out);
-		if (ofile.fail())
+		if (ofile.fail()) {
+			ofile.clear();
+			ofile.close();
 			return CAN_NOT_CREATE_FILE;
-		else
+		}
+		else {
+			ofile.clear();
+			ofile.close();
 			return CREATE_FILE_SUCCEED;
-		ofile.clear();
-		ofile.close();
+		}
 	}
 };
 
