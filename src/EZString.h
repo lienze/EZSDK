@@ -155,6 +155,21 @@ public:
 			return true;
 		}
 	}
+	bool PrintList(){
+		if (pHead == NULL) {
+			printf("List is NULL\n");
+			return false;
+		}
+		else{
+			pCurr = pHead;
+			while(pCurr){
+				printf("%s ", pCurr->ez_str.content().c_str());
+				pCurr = pCurr->pNextNode;
+			}
+			printf("\n");
+			return true;
+		}
+	}
 	inline int GetSize() const{
 		return iNodeNum;
 	}
