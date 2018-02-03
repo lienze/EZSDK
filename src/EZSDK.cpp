@@ -110,6 +110,6 @@ void TestEZTime(){
 
 int main()
 {
-	TestEZStringListInsert();
+	TestEZTime();
 	return 0;
 }

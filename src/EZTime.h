@@ -9,9 +9,15 @@ class EZTime
 public:
 	EZTime(){}
 	~EZTime(){}
-	std::tm *GetTime(){
+	bool UpdateTime(){
 		time(&raw_time);
 		t_time = localtime(&raw_time);
+		return true;
+	}
+	std::tm *GetTime(){
+		if(t_time==NULL){
+			UpdateTime();
+		}
 		return t_time;
 	}
 	int GetYear(){
