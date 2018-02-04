@@ -2,6 +2,7 @@
 #include "EZFile.h"
 #include "EZString.h"
 #include "EZTime.h"
+#include "EZNet.h"
 
 void TestEZReadFile() {
 	EZ::EZReadFile fFile;
