@@ -108,9 +108,13 @@ void TestEZTime(){
 	std::cout << _time.GetSeconds() << std::endl;
 }
 
+void TestEZNet(){
+	EZ::EZUDP aUDP;
+	aUDP.InitNet(8888,"192.168.199.103");
+}
 
 int main()
 {
-	TestEZTime();
+	TestEZNet();
 	return 0;
 }
