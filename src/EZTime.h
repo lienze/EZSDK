@@ -7,7 +7,9 @@ namespace EZ {
 class EZTime
 {
 public:
-	EZTime(){}
+	EZTime(){
+		t_time = NULL;
+	}
 	~EZTime(){}
 	bool UpdateTime(){
 		time(&raw_time);
