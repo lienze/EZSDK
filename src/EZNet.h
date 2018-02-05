@@ -3,7 +3,10 @@
 #if (defined __APPLE__) || (defined LINUX)
 #include <sys/socket.h>
 #include <netinet/in.h>
+#elif (defined _WIN32) || (defined _WIN64)
+#include <WinSock2.h>
 #endif
+
 
 namespace EZ {
 class EZNetBase
