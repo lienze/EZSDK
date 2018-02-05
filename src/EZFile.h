@@ -11,6 +11,8 @@
         F.close();       \
     } while(0)           \
 
+//solve conflict with the define in <fileapi.h>
+#define CreateFileA CreateFile
 
 namespace EZ{
 class EZFileBase
