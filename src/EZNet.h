@@ -32,7 +32,11 @@ public:
 		m_sockaddr.sin_addr.s_addr = inet_addr(_pAddr);
 		return true;
 	}
-	bool SendTo(){
+	bool SendTo(const char* pBuf){
+		assert(strlen(pBuf)<=1024);
+		memset(m_SendBuff,0,sizeof(m_SendBuff));
+		//memcpy(m_SendBuff,pBuf,sizeof(m_SendBuff));
+		strncpy(m_SendBuff,pBuf,strlen(pBuf));
 		int ret = sendto(m_sock,m_SendBuff,sizeof(m_SendBuff),0,(struct sockaddr *)&m_sockaddr,sizeof(m_sockaddr));
 		if(ret == -1)
 			return false;
