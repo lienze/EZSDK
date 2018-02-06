@@ -12,6 +12,9 @@
 namespace EZ {
 class EZNetBase
 {
+public:
+	EZNetBase(){}
+	virtual ~EZNetBase(){}
 	virtual bool InitNet(unsigned short _usPort,const char * _pAddr) = 0;
 };
 class EZUDP:public EZNetBase

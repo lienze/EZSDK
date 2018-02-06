@@ -19,7 +19,7 @@ class EZFileBase
 {
 public:
 	EZFileBase(){}
-	~EZFileBase(){}
+	virtual ~EZFileBase(){}
 	enum FileRetType {
 		CAN_NOT_OPEN_READ_FILE = -1,
 		CAN_NOT_OPEN_SAVE_FILE = -2,
