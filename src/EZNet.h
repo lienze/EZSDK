@@ -8,8 +8,11 @@
 #include <WinSock2.h>
 #endif
 
-
 namespace EZ {
+
+const int g_iMaxSendLen = 1024;
+const int g_iMaxRecvLen = 1024;
+
 class EZNetBase
 {
 public:
@@ -24,6 +27,7 @@ public:
 		m_sock = socket(AF_INET, SOCK_DGRAM, 0);
 		m_sockaddr.sin_family = AF_INET;//IPv4
 		memset(m_SendBuff,0,sizeof(m_SendBuff));
+		memset(m_RecvBuff,0,sizeof(m_RecvBuff));
 	}
 	~EZUDP(){}
 public:
@@ -33,7 +37,7 @@ public:
 		return true;
 	}
 	bool SendTo(const char* pBuf){
-		assert(strlen(pBuf)<=1024);
+		assert(strlen(pBuf)<=g_iMaxSendLen);
 		memset(m_SendBuff,0,sizeof(m_SendBuff));
 		//memcpy(m_SendBuff,pBuf,sizeof(m_SendBuff));
 		strncpy(m_SendBuff,pBuf,strlen(pBuf));
@@ -42,10 +46,19 @@ public:
 			return false;
 		return true;
 	}
+	bool RecvFrom(char * pBuff){
+		assert(strlen(pBuff)<=g_iMaxRecvLen);
+		memset(m_RecvBuff,0,sizeof(m_RecvBuff));
+		socklen_t len = sizeof(m_sockaddrFrom);
+		recvfrom(m_sock,m_RecvBuff,g_iMaxRecvLen,0,(struct sockaddr *)&m_sockaddrFrom,&len);
+		return true;
+	}
 private:
 	int m_sock;
 	struct sockaddr_in m_sockaddr;
-	char m_SendBuff[1024];
+	struct sockaddr_in m_sockaddrFrom;
+	char m_SendBuff[g_iMaxSendLen];
+	char m_RecvBuff[g_iMaxRecvLen];
 };
 
 class EZTCP:public EZNetBase
