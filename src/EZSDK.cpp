@@ -113,8 +113,18 @@ void TestEZNet(){
 	aUDP.InitNet(8888,"192.168.199.103");
 }
 
-int main()
+int main(int argc,char *argv[])
 {
+	if(argc > 1){
+		if(argc==2){//one parameter
+			if(strcmp(argv[1],"-client")==0){
+				printf("client running...\n");
+			}
+			else if(strcmp(argv[1],"-server")==0){
+				printf("server running...\n");
+			}
+		}
+	}
 	TestEZNet();
 	return 0;
 }
