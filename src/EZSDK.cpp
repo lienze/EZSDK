@@ -108,9 +108,16 @@ void TestEZTime(){
 	std::cout << _time.GetSeconds() << std::endl;
 }
 
-void TestEZNet(){
+void TestEZNetClient(){
 	EZ::EZUDP aUDP;
-	aUDP.InitNet(8888,"192.168.199.103");
+	aUDP.InitNetSend("192.168.199.101",8888);
+	aUDP.SendTo("Hello");
+}
+
+void TestEZNetServer(){
+	EZ::EZUDP aUDP;
+	aUDP.InitNetRecv(8888);
+	aUDP.RecvFrom();
 }
 
 int main(int argc,char *argv[])
@@ -119,12 +126,13 @@ int main(int argc,char *argv[])
 		if(argc==2){//one parameter
 			if(strcmp(argv[1],"-client")==0){
 				printf("client running...\n");
+				TestEZNetClient();
 			}
 			else if(strcmp(argv[1],"-server")==0){
 				printf("server running...\n");
+				TestEZNetServer();
 			}
 		}
 	}
-	TestEZNet();
 	return 0;
 }

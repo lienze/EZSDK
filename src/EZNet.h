@@ -18,22 +18,30 @@ class EZNetBase
 public:
 	EZNetBase(){}
 	virtual ~EZNetBase(){}
-	virtual bool InitNet(unsigned short _usPort,const char * _pAddr) = 0;
+	//virtual bool InitNet(const char * _pAddr,const unsigned short _usPort) = 0;
 };
 class EZUDP:public EZNetBase
 {
 public:
 	EZUDP(){
 		m_sock = socket(AF_INET, SOCK_DGRAM, 0);
-		m_sockaddr.sin_family = AF_INET;//IPv4
+		m_sockaddrSend.sin_family = AF_INET;//IPv4
+		m_sockaddrRecv.sin_family = AF_INET;
 		memset(m_SendBuff,0,sizeof(m_SendBuff));
 		memset(m_RecvBuff,0,sizeof(m_RecvBuff));
 	}
 	~EZUDP(){}
 public:
-	bool InitNet(unsigned short _usPort,const char * _pAddr){
-		m_sockaddr.sin_port = htons(_usPort);
-		m_sockaddr.sin_addr.s_addr = inet_addr(_pAddr);
+	bool InitNetSend(const char * _pAddr
+					,const unsigned short _usPort){
+		m_sockaddrSend.sin_port = htons(_usPort);
+		m_sockaddrSend.sin_addr.s_addr = inet_addr(_pAddr);
+		return true;
+	}
+	bool InitNetRecv(const unsigned short _usPort){
+		m_sockaddrRecv.sin_port = htons(_usPort);
+		m_sockaddrSend.sin_addr.s_addr = htonl(INADDR_ANY);
+		bind(m_sock,(struct sockaddr*)&m_sockaddrRecv,sizeof(m_sockaddrRecv));
 		return true;
 	}
 	bool SendTo(const char* pBuf){
@@ -41,22 +49,23 @@ public:
 		memset(m_SendBuff,0,sizeof(m_SendBuff));
 		//memcpy(m_SendBuff,pBuf,sizeof(m_SendBuff));
 		strncpy(m_SendBuff,pBuf,strlen(pBuf));
-		int ret = sendto(m_sock,m_SendBuff,sizeof(m_SendBuff),0,(struct sockaddr *)&m_sockaddr,sizeof(m_sockaddr));
+		int ret = sendto(m_sock,m_SendBuff,sizeof(m_SendBuff),0,(struct sockaddr *)&m_sockaddrSend,sizeof(m_sockaddrSend));
 		if(ret == -1)
 			return false;
 		return true;
 	}
-	bool RecvFrom(char * pBuff){
-		assert(strlen(pBuff)<=g_iMaxRecvLen);
+	bool RecvFrom(){
+		//assert(strlen(pBuff)<=g_iMaxRecvLen);
 		memset(m_RecvBuff,0,sizeof(m_RecvBuff));
-		socklen_t len = sizeof(m_sockaddrFrom);
-		recvfrom(m_sock,m_RecvBuff,g_iMaxRecvLen,0,(struct sockaddr *)&m_sockaddrFrom,&len);
+		socklen_t len = sizeof(m_sockaddrRecv);
+		recvfrom(m_sock,m_RecvBuff,g_iMaxRecvLen,0,(struct sockaddr *)&m_sockaddrRecv,&len);
+		printf("recv: %s\n",m_RecvBuff);
 		return true;
 	}
 private:
 	int m_sock;
-	struct sockaddr_in m_sockaddr;
-	struct sockaddr_in m_sockaddrFrom;
+	struct sockaddr_in m_sockaddrSend;
+	struct sockaddr_in m_sockaddrRecv;
 	char m_SendBuff[g_iMaxSendLen];
 	char m_RecvBuff[g_iMaxRecvLen];
 };
