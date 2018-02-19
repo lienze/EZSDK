@@ -1,12 +1,14 @@
 #pragma once
 
-#if (defined __APPLE__) || (defined LINUX)
+#if (defined __APPLE__) || (defined __linux__)
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #elif (defined _WIN32) || (defined _WIN64)
 #include <WinSock2.h>
 #endif
+
+#include <cstring>
 
 namespace EZ {
 
