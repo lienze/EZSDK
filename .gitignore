@@ -38,3 +38,7 @@ Debug
 Release
 EZSDK
 EZSDK.dSYM
+
+# vim
+.swp
+
