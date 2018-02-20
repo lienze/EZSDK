@@ -40,5 +40,5 @@ EZSDK
 EZSDK.dSYM
 
 # vim
-.swp
+*.swp
 
