@@ -9,17 +9,17 @@
 #endif
 
 #include <cstring>
+#include <vector>
 
 namespace EZ {
 
 const int g_iMaxSendLen = 1024;
 const int g_iMaxRecvLen = 1024;
+//const int g_iMaxNetUnit = 200;
 
 class EZNetBase
 {
 public:
-	EZNetBase(){}
-	virtual ~EZNetBase(){}
 	//virtual bool InitNet(const char * _pAddr,const unsigned short _usPort) = 0;
 };
 class EZUDP:public EZNetBase
@@ -42,7 +42,7 @@ public:
 	}
 	bool InitNetRecv(const unsigned short _usPort){
 		m_sockaddrRecv.sin_port = htons(_usPort);
-		m_sockaddrSend.sin_addr.s_addr = htonl(INADDR_ANY);
+		m_sockaddrRecv.sin_addr.s_addr = htonl(INADDR_ANY);
 		bind(m_sock,(struct sockaddr*)&m_sockaddrRecv,sizeof(m_sockaddrRecv));
 		return true;
 	}
@@ -77,5 +77,37 @@ class EZTCP:public EZNetBase
 public:
 	EZTCP(){}
 	~EZTCP(){}
+};
+class EZNetMan	//Net Manager
+{
+public:
+	EZNetMan(){}
+	~EZNetMan(){}
+	bool AddUnit(EZNetBase* _p){
+		vecNetUnit.push_back(_p);
+		return true;
+	}
+	bool RemoveUnit(EZNetBase *_p){
+		return true;
+	}
+	bool FindUnit(EZNetBase *_p){
+		auto it = vecNetUnit.begin();
+ 		for(;it!=vecNetUnit.end();it++){
+			if(*it == _p)
+				return true;	
+		}
+		return false;
+	}
+	unsigned int FindUnitPos(EZNetBase *_p){
+		unsigned int _iPos = 0;
+		auto it = vecNetUnit.begin();
+		for(;it!=vecNetUnit.end();it++,_iPos++){
+			if(*it == _p)
+				return _iPos;
+		}
+		return -1;
+	}
+private:
+	std::vector<EZNetBase*> vecNetUnit;
 };
 }//end namespace EZ

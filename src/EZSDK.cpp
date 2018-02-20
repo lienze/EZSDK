@@ -110,14 +110,22 @@ void TestEZTime(){
 
 void TestEZNetClient(){
 	EZ::EZUDP aUDP;
-	aUDP.InitNetSend("192.168.199.101",8888);
+	EZ::EZUDP bUDP;
+	aUDP.InitNetSend("192.168.1.104",8888);
 	aUDP.SendTo("Hello");
+	EZ::EZNetMan g_NetMan;
+	g_NetMan.AddUnit(&aUDP);
+	g_NetMan.AddUnit(&bUDP);
+	int _size=0;
+	_size=g_NetMan.FindUnitPos(&bUDP);
+	printf("g_NetMan == %d\n",_size);
 }
-
 void TestEZNetServer(){
 	EZ::EZUDP aUDP;
 	aUDP.InitNetRecv(8888);
-	aUDP.RecvFrom();
+	while(1){
+		aUDP.RecvFrom();
+	}
 }
 
 int main(int argc,char *argv[])
