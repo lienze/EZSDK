@@ -20,7 +20,8 @@ const int g_iMaxRecvLen = 1024;
 class EZNetBase
 {
 public:
-	//virtual bool InitNet(const char * _pAddr,const unsigned short _usPort) = 0;
+	EZNetBase(){}
+	virtual ~EZNetBase(){}
 };
 class EZUDP:public EZNetBase
 {
@@ -61,7 +62,7 @@ public:
 		memset(m_RecvBuff,0,sizeof(m_RecvBuff));
 		socklen_t len = sizeof(m_sockaddrRecv);
 		recvfrom(m_sock,m_RecvBuff,g_iMaxRecvLen,0,(struct sockaddr *)&m_sockaddrRecv,&len);
-		printf("recv: %s\n",m_RecvBuff);
+		printf("recv:%s from_addr:%s:%d\n",m_RecvBuff,inet_ntoa(m_sockaddrRecv.sin_addr),m_sockaddrRecv.sin_port);
 		return true;
 	}
 private:
