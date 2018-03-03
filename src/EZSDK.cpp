@@ -3,6 +3,7 @@
 #include "EZString.h"
 #include "EZTime.h"
 #include "EZNet.h"
+#include "EZLog.h"
 
 void TestEZReadFile() {
 	EZ::EZReadFile fFile;
@@ -111,18 +112,21 @@ void TestEZTime(){
 void TestEZNetClient(){
 	EZ::EZUDP aUDP;
 	EZ::EZUDP bUDP;
-	aUDP.InitNetSend("192.168.1.104",8888);
+	aUDP.InitNetSend("192.168.199.101",8888);
 	aUDP.SendTo("Hello");
 	EZ::EZNetMan g_NetMan;
 	g_NetMan.AddUnit(&aUDP);
 	g_NetMan.AddUnit(&bUDP);
-	int _size=0;
-	_size=g_NetMan.FindUnitPos(&bUDP);
-	printf("g_NetMan == %d\n",_size);
+	int _pos=0;
+	_pos=g_NetMan.FindUnitPos(&bUDP);
+	printf("g_NetMan == %d\n",_pos);
 }
 void TestEZNetServer(){
 	EZ::EZUDP aUDP;
 	aUDP.InitNetRecv(8888);
+	EZ::EZLog errLog;
+	errLog.InitLog("./Log/err.txt");
+	errLog.WriteData("Hello");
 	while(1){
 		aUDP.RecvFrom();
 	}
