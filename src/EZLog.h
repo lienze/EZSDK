@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <string>
+#include <ctime>
 
 namespace EZ {
 enum LOGTYPE
@@ -24,18 +25,35 @@ public:
 			printf("can not open %s\n",_szPath.c_str());
 			return false;
 		}
-		else
-			return true;
+		return true;
 	}
 	bool WriteData(std::string _szTmp){
 		if(fLog.is_open()){
-			fLog << _szTmp;
+			//Get Current Time
+			time(&raw_time);
+			t_time = localtime(&raw_time);
+			char _time[256];
+			memset(_time,0,256);
+			sprintf(_time,"%d/%d/%d %d:%d:%d ",
+				t_time->tm_year+1900,
+				t_time->tm_mon+1,
+				t_time->tm_mday,
+				t_time->tm_hour,
+				t_time->tm_min,
+				t_time->tm_sec);
+			fLog << _time << _szTmp << std::endl;
 			return true;
 		}
 		return false;
 	}
+	void CloseLog(){
+		fLog.clear();
+		fLog.close();
+	}
 private:
 	std::fstream fLog;
+	time_t raw_time;
+	struct std::tm *t_time;
 };//end class EZLog
 
 class EZLogMan //EZLog Manager
