@@ -6,6 +6,8 @@
 #include <arpa/inet.h>
 #elif (defined _WIN32) || (defined _WIN64)
 #include <WinSock2.h>
+#include <ws2tcpip.h>
+#pragma comment(lib,"Ws2_32.lib")
 #endif
 
 #include <cstring>
