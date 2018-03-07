@@ -43,7 +43,6 @@ public:
 			fLog << _time << _szTmp << std::endl;
 			return true;
 		}
-		printf("Write==NULL\n");
 		return false;
 	}
 	void CloseLog(){
@@ -74,10 +73,8 @@ private:
 
 #define ELOG(__TYPE,__STR) do{\
 	auto pLogger = g_LogMan.GetLogger(__TYPE);\
-	if(pLogger){\
+	if(pLogger)\
 		pLogger->WriteData(__STR);\
-		printf("come");\
-	}\
 }while(0);
 
 }//end namespace EZ
