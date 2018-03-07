@@ -127,6 +127,12 @@ void TestEZNetServer(){
 	EZ::EZLog errLog;
 	errLog.InitLog("./Log/err.txt");
 	errLog.WriteData("Hello");
+	EZ::EZLogMan g_LogMan;
+	g_LogMan.AddLogger(&errLog,EZ::LogType::ERRLOG);
+	auto pLogger = g_LogMan.GetLogger(EZ::LogType::ERRLOG);
+	if(pLogger)
+		pLogger->WriteData("Good");
+	errLog.CloseLog();
 	while(1){
 		aUDP.RecvFrom();
 	}

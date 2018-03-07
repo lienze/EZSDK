@@ -3,14 +3,16 @@
 #include <fstream>
 #include <string>
 #include <ctime>
+#include <map>
 
 namespace EZ {
-enum LOGTYPE
-{
+
+typedef enum{
 	SYSLOG = 1,
 	CLIENTLOG = 2,
 	ERRLOG = 3,
-};
+}LogType;
+
 class EZLog
 {
 public:
@@ -32,9 +34,9 @@ public:
 			//Get Current Time
 			time(&raw_time);
 			t_time = localtime(&raw_time);
-			char _time[256];
-			memset(_time,0,256);
-			sprintf(_time,"%d/%d/%d %d:%d:%d ",
+			char _time[128];
+			memset(_time,0,128);
+			sprintf(_time,"%d/%02d/%02d %02d:%02d:%02d ",
 				t_time->tm_year+1900,
 				t_time->tm_mon+1,
 				t_time->tm_mday,
@@ -61,6 +63,15 @@ class EZLogMan //EZLog Manager
 public:
 	EZLogMan(){}
 	~EZLogMan(){}
-
+	bool AddLogger(EZLog *_pLog,LogType _Type){
+		LogMap.insert({_Type,_pLog});
+		return true;
+	}
+	EZLog * GetLogger(LogType _Type){
+		return LogMap[_Type];
+	}
+private:
+	std::map<LogType,EZLog *> LogMap;
 };//end class EZLogMan
+
 }//end namespace EZ
