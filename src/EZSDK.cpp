@@ -5,6 +5,8 @@
 #include "EZNet.h"
 #include "EZLog.h"
 
+EZ::EZLogMan g_LogMan;
+
 void TestEZReadFile() {
 	EZ::EZReadFile fFile;
 	int iRet = fFile.FileOpen("./test.txt");
@@ -109,6 +111,21 @@ void TestEZTime(){
 	std::cout << _time.GetSeconds() << std::endl;
 }
 
+void Test_InitLogForServer(){
+	EZ::EZLog *sysLog = new EZ::EZLog;
+	if(sysLog)
+		sysLog->InitLog("./Log/sys.txt");
+	EZ::EZLog *clientLog = new EZ::EZLog;
+	if(clientLog)
+		clientLog->InitLog("./Log/client.txt");
+	EZ::EZLog *errLog = new EZ::EZLog;
+	if(errLog)
+		errLog->InitLog("./Log/err.txt");
+	g_LogMan.AddLogger(sysLog,EZ::LogType::SYSLOG);
+	g_LogMan.AddLogger(clientLog,EZ::LogType::CLIENTLOG);
+	g_LogMan.AddLogger(errLog,EZ::LogType::ERRLOG);
+}
+
 void TestEZNetClient(){
 	EZ::EZUDP aUDP;
 	EZ::EZUDP bUDP;
@@ -124,18 +141,11 @@ void TestEZNetClient(){
 void TestEZNetServer(){
 	EZ::EZUDP aUDP;
 	aUDP.InitNetRecv(8888);
-	EZ::EZLog errLog;
-	errLog.InitLog("./Log/err.txt");
-	errLog.WriteData("Hello");
-	EZ::EZLogMan g_LogMan;
-	g_LogMan.AddLogger(&errLog,EZ::LogType::ERRLOG);
-	auto pLogger = g_LogMan.GetLogger(EZ::LogType::ERRLOG);
-	if(pLogger)
-		pLogger->WriteData("Good");
-	errLog.CloseLog();
-	while(1){
-		aUDP.RecvFrom();
-	}
+	Test_InitLogForServer();
+	ELOG(EZ::LogType::ERRLOG,"Hello World!");
+	//while(1){
+	//	aUDP.RecvFrom();
+	//}
 }
 
 int main(int argc,char *argv[])

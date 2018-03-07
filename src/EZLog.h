@@ -17,10 +17,7 @@ class EZLog
 {
 public:
 	EZLog(){}
-	~EZLog(){
-		fLog.clear();
-		fLog.close();
-	}
+	~EZLog(){}
 	bool InitLog(std::string _szPath){
 		fLog.open(_szPath,std::ios::app);
 		if(fLog.fail()){
@@ -46,6 +43,7 @@ public:
 			fLog << _time << _szTmp << std::endl;
 			return true;
 		}
+		printf("Write==NULL\n");
 		return false;
 	}
 	void CloseLog(){
@@ -73,5 +71,13 @@ public:
 private:
 	std::map<LogType,EZLog *> LogMap;
 };//end class EZLogMan
+
+#define ELOG(__TYPE,__STR) do{\
+	auto pLogger = g_LogMan.GetLogger(__TYPE);\
+	if(pLogger){\
+		pLogger->WriteData(__STR);\
+		printf("come");\
+	}\
+}while(0);
 
 }//end namespace EZ
