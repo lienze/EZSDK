@@ -4,6 +4,7 @@
 #include "EZTime.h"
 #include "EZNet.h"
 #include "EZLog.h"
+#include "EZDef.h"
 
 EZ::EZLogMan g_LogMan;
 
@@ -142,7 +143,7 @@ void TestEZNetServer(){
 	EZ::EZUDP aUDP;
 	aUDP.InitNetRecv(8888);
 	Test_InitLogForServer();
-	ELOG(EZ::LogType::ERRLOG,"Hello World!");
+	ELOG(ERRORLOG,"Hello World!");
 	//while(1){
 	//	aUDP.RecvFrom();
 	//}
