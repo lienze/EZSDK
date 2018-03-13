@@ -111,22 +111,9 @@ void TestEZTime(){
 	std::cout << _time.GetMinutes() << std::endl;
 	std::cout << _time.GetSeconds() << std::endl;
 }
-
-void Test_InitLogForServer(){
-	EZ::EZLog *sysLog = new EZ::EZLog;
-	if(sysLog)
-		sysLog->InitLog("./Log/sys.txt");
-	EZ::EZLog *clientLog = new EZ::EZLog;
-	if(clientLog)
-		clientLog->InitLog("./Log/client.txt");
-	EZ::EZLog *errLog = new EZ::EZLog;
-	if(errLog)
-		errLog->InitLog("./Log/err.txt");
-	g_LogMan.AddLogger(sysLog,EZ::LogType::SYSLOG);
-	g_LogMan.AddLogger(clientLog,EZ::LogType::CLIENTLOG);
-	g_LogMan.AddLogger(errLog,EZ::LogType::ERRLOG);
-}
-
+//////////////////////////////////////////////////
+// Funcionts for Client
+//////////////////////////////////////////////////
 void TestEZNetClient(){
 	EZ::EZUDP aUDP;
 	EZ::EZUDP bUDP;
@@ -139,6 +126,25 @@ void TestEZNetClient(){
 	_pos=g_NetMan.FindUnitPos(&bUDP);
 	printf("g_NetMan == %d\n",_pos);
 }
+
+//////////////////////////////////////////////////
+// Funcionts for Server
+//////////////////////////////////////////////////
+void Test_InitLogForServer(){
+	EZ::EZLog *sysLog = new EZ::EZLog;
+	if(sysLog)
+		sysLog->InitLog("./Log/sys.txt");
+	EZ::EZLog *clientLog = new EZ::EZLog;
+	if(clientLog)
+		clientLog->InitLog("./Log/client.txt");
+	EZ::EZLog *errLog = new EZ::EZLog;
+	if(errLog)
+		errLog->InitLog("./Log/err.txt");
+	g_LogMan.AddLogger(sysLog,SYSLOG);
+	g_LogMan.AddLogger(clientLog,CLIENTLOG);
+	g_LogMan.AddLogger(errLog,ERRORLOG);
+}
+
 void TestEZNetServer(){
 	EZ::EZUDP aUDP;
 	aUDP.InitNetRecv(8888);

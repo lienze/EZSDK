@@ -8,9 +8,9 @@
 namespace EZ {
 
 typedef enum{
-	SYSLOG = 1,
-	CLIENTLOG = 2,
-	ERRLOG = 3,
+	SYS    = 1,
+	CLIENT = 2,
+	ERR    = 3,
 }LogType;
 
 class EZLog
