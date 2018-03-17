@@ -84,18 +84,23 @@ public:
 class EZNetMan	//Net Manager
 {
 public:
-	EZNetMan(){}
+	EZNetMan(){
+		FD_ZERO(&m_rd);
+		FD_SET(0, &m_rd);
+		m_tv.tv_sec = 5;
+		m_tv.tv_usec = 0;
+	}
 	~EZNetMan(){}
 	bool AddUnit(EZNetBase* _p){
-		vecNetUnit.push_back(_p);
+		m_vecNetUnit.push_back(_p);
 		return true;
 	}
 	bool RemoveUnit(EZNetBase *_p){
 		return true;
 	}
 	bool FindUnit(EZNetBase *_p){
-		auto it = vecNetUnit.begin();
- 		for(;it!=vecNetUnit.end();it++){
+		auto it = m_vecNetUnit.begin();
+ 		for(;it!=m_vecNetUnit.end();it++){
 			if(*it == _p)
 				return true;	
 		}
@@ -103,14 +108,22 @@ public:
 	}
 	unsigned int FindUnitPos(EZNetBase *_p){
 		unsigned int _iPos = 0;
-		auto it = vecNetUnit.begin();
-		for(;it!=vecNetUnit.end();it++,_iPos++){
+		auto it = m_vecNetUnit.begin();
+		for(;it!=m_vecNetUnit.end();it++,_iPos++){
 			if(*it == _p)
 				return _iPos;
 		}
 		return -1;
 	}
+	int Logic() {
+		int rst = select(1, &m_rd, NULL, NULL, &m_tv);
+		if (rst)
+			printf("Data is available.\n");
+	}
 private:
-	std::vector<EZNetBase*> vecNetUnit;
+	std::vector<EZNetBase*> m_vecNetUnit;
+	fd_set m_rd;
+	struct timeval m_tv;
+	int m_iErr;
 };
 }//end namespace EZ
