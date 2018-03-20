@@ -81,15 +81,35 @@ public:
 	EZTCP(){}
 	~EZTCP(){}
 };
-class EZNetMan	//Net Manager
+
+class EZSelector
 {
 public:
-	EZNetMan(){
+	EZSelector() {
 		FD_ZERO(&m_rd);
 		FD_SET(0, &m_rd);
 		m_tv.tv_sec = 5;
 		m_tv.tv_usec = 0;
+		m_MaxSock = 0;
 	}
+	~EZSelector() {}
+	bool Logic() {
+		int rst = select(m_MaxSock+1, &m_rd, NULL, NULL, &m_tv);
+		if (rst)
+			printf("Data is available.\n");
+		return true;
+	}
+private:
+	fd_set m_rd;
+	struct timeval m_tv;
+	int m_iErr;
+	int m_MaxSock;
+};
+
+class EZNetMan	//Net Manager
+{
+public:
+	EZNetMan(){}
 	~EZNetMan(){}
 	bool AddUnit(EZNetBase* _p){
 		m_vecNetUnit.push_back(_p);
@@ -116,14 +136,10 @@ public:
 		return -1;
 	}
 	int Logic() {
-		int rst = select(1, &m_rd, NULL, NULL, &m_tv);
-		if (rst)
-			printf("Data is available.\n");
+		m_selector.Logic();
 	}
 private:
 	std::vector<EZNetBase*> m_vecNetUnit;
-	fd_set m_rd;
-	struct timeval m_tv;
-	int m_iErr;
+	EZSelector m_selector;
 };
 }//end namespace EZ

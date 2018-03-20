@@ -119,7 +119,7 @@ void TestEZTime(){
 void TestEZNetClient(){
 	EZUDP aUDP;
 	EZUDP bUDP;
-	aUDP.InitNetSend("192.168.199.101",8888);
+	aUDP.InitNetSend("192.168.3.104",8888);
 	aUDP.SendTo("Hello");
 	EZNetMan g_NetMan;
 	g_NetMan.AddUnit(&aUDP);
@@ -152,6 +152,10 @@ void TestEZNetServer(){
 	aUDP.InitNetRecv(8888);
 	Test_InitLogForServer();
 	ELOG(ERRORLOG,"Hello World!");
+	EZNetMan g_NetMan;
+	while (1) {
+		g_NetMan.Logic();
+	}
 	//while(1){
 	//	aUDP.RecvFrom();
 	//}
