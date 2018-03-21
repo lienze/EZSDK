@@ -148,17 +148,19 @@ void Test_InitLogForServer(){
 }
 
 void TestEZNetServer(){
-	EZUDP aUDP;
-	aUDP.InitNetRecv(8888);
+	//初始化日志系统
 	Test_InitLogForServer();
 	ELOG(ERRORLOG,"Hello World!");
+	//初始化网络连接
+	EZUDP aUDP;
+	aUDP.InitNetRecv(8888);
 	EZNetMan g_NetMan;
-	while (1) {
+	g_NetMan.AddUnit(&aUDP);
+	//程序主循环
+	bool bStop = false;
+	while (!bStop) {
 		g_NetMan.Logic();
 	}
-	//while(1){
-	//	aUDP.RecvFrom();
-	//}
 }
 
 int main(int argc,char *argv[])
