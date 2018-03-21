@@ -95,9 +95,16 @@ public:
 	~EZSelector() {}
 	bool Logic() {
 		int rst = select(m_MaxSock+1, &m_rd, NULL, NULL, &m_tv);
-		if (rst)
-			printf("Data is available.\n");
-		return true;
+		if (rst > 0)
+		{
+			printf("Data is available.%d\n", rst);
+			return true;
+		}
+		else
+		{
+			printf("Data none %d\n", rst);
+			return false;
+		}
 	}
 private:
 	fd_set m_rd;
@@ -135,8 +142,13 @@ public:
 		}
 		return -1;
 	}
-	int Logic() {
-		m_selector.Logic();
+	bool Logic() {
+		if (m_selector.Logic() == true)//存在数据
+		{
+			//TODO 进行接收，推送至上层逻辑中进行处理
+
+		}
+		return true;
 	}
 private:
 	std::vector<EZNetBase*> m_vecNetUnit;
