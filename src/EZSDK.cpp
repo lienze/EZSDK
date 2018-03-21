@@ -151,6 +151,8 @@ void TestEZNetServer(){
 	//初始化日志系统
 	Test_InitLogForServer();
 	ELOG(ERRORLOG,"Hello World!");
+	WSAData wd;
+	WSAStartup(MAKEWORD(2, 2), &wd);
 	//初始化网络连接
 	EZUDP aUDP;
 	aUDP.InitNetRecv(8888);

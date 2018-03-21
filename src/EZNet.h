@@ -24,6 +24,7 @@ class EZNetBase
 public:
 	EZNetBase(){}
 	virtual ~EZNetBase(){}
+	virtual int GetSock() = 0;
 };
 class EZUDP:public EZNetBase
 {
@@ -67,6 +68,7 @@ public:
 		printf("recv:%s from_addr:%s:%d\n",m_RecvBuff,inet_ntoa(m_sockaddrRecv.sin_addr),m_sockaddrRecv.sin_port);
 		return true;
 	}
+	virtual int GetSock() { return m_sock; }
 private:
 	int m_sock;
 	struct sockaddr_in m_sockaddrSend;
@@ -91,9 +93,11 @@ public:
 		m_tv.tv_sec = 5;
 		m_tv.tv_usec = 0;
 		m_MaxSock = 0;
+		m_SockNum = 0;
 	}
 	~EZSelector() {}
 	bool Logic() {
+		FD_ZERO(&m_rd);
 		int rst = select(m_MaxSock+1, &m_rd, NULL, NULL, &m_tv);
 		if (rst > 0)
 		{
@@ -106,11 +110,16 @@ public:
 			return false;
 		}
 	}
+	void SetMaxSock(int _MaxSock) { m_MaxSock = _MaxSock; }
+	int  GetMaxSock() { return m_MaxSock; }
+	void SetSockNum(int _SockNum) { m_SockNum = _SockNum; }
+	int  GetSockNum() { return m_SockNum; }
 private:
 	fd_set m_rd;
 	struct timeval m_tv;
 	int m_iErr;
 	int m_MaxSock;
+	int m_SockNum;
 };
 
 class EZNetMan	//Net Manager
@@ -120,6 +129,9 @@ public:
 	~EZNetMan(){}
 	bool AddUnit(EZNetBase* _p){
 		m_vecNetUnit.push_back(_p);
+		if(m_selector.GetMaxSock() < _p->GetSock())
+			m_selector.SetMaxSock(_p->GetSock());
+		m_selector.SetSockNum(m_selector.GetSockNum() + 1);
 		return true;
 	}
 	bool RemoveUnit(EZNetBase *_p){
