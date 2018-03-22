@@ -13,6 +13,8 @@
 #include <cstring>
 #include <vector>
 
+#include "EZDef.h"
+
 namespace EZ {
 
 const int g_iMaxSendLen = 1024;
@@ -89,24 +91,38 @@ class EZSelector
 public:
 	EZSelector() {
 		FD_ZERO(&m_rd);
-		FD_SET(0, &m_rd);
-		m_tv.tv_sec = 5;
+		m_tv.tv_sec = 0;
 		m_tv.tv_usec = 0;
 		m_MaxSock = 0;
 		m_SockNum = 0;
 	}
 	~EZSelector() {}
-	bool Logic() {
+	bool Do_Select(std::vector<EZNetBase*> &vec,long _tv_sec,long _tv_usec) {
+		//初始化select超时时间
+		m_tv.tv_sec = _tv_sec;
+		m_tv.tv_usec = _tv_usec;
+		//初始化readfds列表
 		FD_ZERO(&m_rd);
+		m_MaxSock = 0;
+		for (auto& elem : vec) {
+			if (elem->GetSock() > m_MaxSock)
+				m_MaxSock = elem->GetSock();
+			FD_SET(elem->GetSock(), &m_rd);
+		}
 		int rst = select(m_MaxSock+1, &m_rd, NULL, NULL, &m_tv);
 		if (rst > 0)
 		{
-			printf("Data is available.%d\n", rst);
+			printf("Data is available %d\n", rst);
 			return true;
+		}
+		else if (rst == -1)
+		{
+			printf("select error %d\n",rst);
+			return false;
 		}
 		else
 		{
-			printf("Data none %d\n", rst);
+			printf("None Data %d\n", rst);
 			return false;
 		}
 	}
@@ -129,9 +145,6 @@ public:
 	~EZNetMan(){}
 	bool AddUnit(EZNetBase* _p){
 		m_vecNetUnit.push_back(_p);
-		if(m_selector.GetMaxSock() < _p->GetSock())
-			m_selector.SetMaxSock(_p->GetSock());
-		m_selector.SetSockNum(m_selector.GetSockNum() + 1);
 		return true;
 	}
 	bool RemoveUnit(EZNetBase *_p){
@@ -154,8 +167,9 @@ public:
 		}
 		return -1;
 	}
-	bool Logic() {
-		if (m_selector.Logic() == true)//存在数据
+	bool Logic() 
+	{
+		if (m_selector.Do_Select(m_vecNetUnit,0, MICROSECONDS_4) == true)//存在数据
 		{
 			//TODO 进行接收，推送至上层逻辑中进行处理
 
@@ -167,3 +181,4 @@ private:
 	EZSelector m_selector;
 };
 }//end namespace EZ
+
