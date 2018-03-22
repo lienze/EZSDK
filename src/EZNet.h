@@ -94,7 +94,6 @@ public:
 		m_tv.tv_sec = 0;
 		m_tv.tv_usec = 0;
 		m_MaxSock = 0;
-		m_SockNum = 0;
 	}
 	~EZSelector() {}
 	bool Do_Select(std::vector<EZNetBase*> &vec,long _tv_sec,long _tv_usec) {
@@ -128,14 +127,11 @@ public:
 	}
 	void SetMaxSock(int _MaxSock) { m_MaxSock = _MaxSock; }
 	int  GetMaxSock() { return m_MaxSock; }
-	void SetSockNum(int _SockNum) { m_SockNum = _SockNum; }
-	int  GetSockNum() { return m_SockNum; }
 private:
 	fd_set m_rd;
 	struct timeval m_tv;
 	int m_iErr;
 	int m_MaxSock;
-	int m_SockNum;
 };
 
 class EZNetMan	//Net Manager
