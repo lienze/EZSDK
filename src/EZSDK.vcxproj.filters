@@ -38,5 +38,8 @@
     <ClInclude Include="EZLog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EZDef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
