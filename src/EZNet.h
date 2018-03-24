@@ -93,7 +93,7 @@ public:
 		FD_ZERO(&m_rd);
 		m_tv.tv_sec = 0;
 		m_tv.tv_usec = 0;
-		m_MaxSock = 0;
+		m_iMaxSock = 0;
 	}
 	~EZSelector() {}
 	bool Do_Select(std::vector<EZNetBase*> &vec,long _tv_sec,long _tv_usec) {
@@ -102,13 +102,13 @@ public:
 		m_tv.tv_usec = _tv_usec;
 		//初始化readfds列表
 		FD_ZERO(&m_rd);
-		m_MaxSock = 0;
+		m_iMaxSock = 0;
 		for (auto& elem : vec) {
-			if (elem->GetSock() > m_MaxSock)
-				m_MaxSock = elem->GetSock();
+			if (elem->GetSock() > m_iMaxSock)
+				m_iMaxSock = elem->GetSock();
 			FD_SET(elem->GetSock(), &m_rd);
 		}
-		int rst = select(m_MaxSock+1, &m_rd, NULL, NULL, &m_tv);
+		int rst = select(m_iMaxSock+1, &m_rd, NULL, NULL, &m_tv);
 		if (rst > 0)
 		{
 			printf("Data is available %d\n", rst);
@@ -125,13 +125,13 @@ public:
 			return false;
 		}
 	}
-	void SetMaxSock(int _MaxSock) { m_MaxSock = _MaxSock; }
-	int  GetMaxSock() { return m_MaxSock; }
+	void SetMaxSock(int _MaxSock) { m_iMaxSock = _MaxSock; }
+	int  GetMaxSock() { return m_iMaxSock; }
 private:
 	fd_set m_rd;
 	struct timeval m_tv;
 	int m_iErr;
-	int m_MaxSock;
+	int m_iMaxSock;
 };
 
 class EZNetMan	//Net Manager
@@ -147,19 +147,18 @@ public:
 		return true;
 	}
 	bool FindUnit(EZNetBase *_p){
-		auto it = m_vecNetUnit.begin();
- 		for(;it!=m_vecNetUnit.end();it++){
-			if(*it == _p)
-				return true;	
+		for (auto it : m_vecNetUnit) {
+			if (it == _p)
+				return true;
 		}
 		return false;
 	}
 	unsigned int FindUnitPos(EZNetBase *_p){
 		unsigned int _iPos = 0;
-		auto it = m_vecNetUnit.begin();
-		for(;it!=m_vecNetUnit.end();it++,_iPos++){
-			if(*it == _p)
+		for (auto it : m_vecNetUnit) {
+			if (it == _p)
 				return _iPos;
+			_iPos++;
 		}
 		return -1;
 	}
