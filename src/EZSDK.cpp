@@ -50,6 +50,10 @@ void TestEZCreateFile(){
 	EZFileBase::CreateFile("./aaa.txt");
 }
 
+void TestEZDir() {
+	DirExsit("./test");
+}
+
 void TestEZString(){
 	EZString szStr;
 	szStr = "Hello";
@@ -167,7 +171,7 @@ void TestEZNetServer(){
 
 int main(int argc,char *argv[])
 {
-	if(argc > 1){
+	/*if(argc > 1){
 		if(argc==2){//one parameter
 			if(strcmp(argv[1],"-client")==0){
 				printf("client running...\n");
@@ -178,6 +182,7 @@ int main(int argc,char *argv[])
 				TestEZNetServer();
 			}
 		}
-	}
+	}*/
+	TestEZDir();
 	return 0;
 }
