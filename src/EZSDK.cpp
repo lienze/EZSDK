@@ -117,6 +117,8 @@ void TestEZTime(){
 // Funcionts for Client
 //////////////////////////////////////////////////
 void TestEZNetClient(){
+	WSAData wd;
+	WSAStartup(MAKEWORD(2, 2), &wd);
 	EZUDP aUDP;
 	EZUDP bUDP;
 	aUDP.InitNetSend("192.168.3.104",8888);

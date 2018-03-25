@@ -27,6 +27,7 @@ public:
 	EZNetBase(){}
 	virtual ~EZNetBase(){}
 	virtual int GetSock() = 0;
+	virtual bool RecvFrom() = 0;
 };
 class EZUDP:public EZNetBase
 {
@@ -62,7 +63,7 @@ public:
 			return false;
 		return true;
 	}
-	bool RecvFrom(){
+	virtual bool RecvFrom(){
 		//assert(strlen(pBuff)<=g_iMaxRecvLen);
 		memset(m_RecvBuff,0,sizeof(m_RecvBuff));
 		socklen_t len = sizeof(m_sockaddrRecv);
@@ -96,7 +97,8 @@ public:
 		m_iMaxSock = 0;
 	}
 	~EZSelector() {}
-	bool Do_Select(std::vector<EZNetBase*> &vec,long _tv_sec,long _tv_usec) {
+	bool DoSelect(std::vector<EZNetBase*> &vec,long _tv_sec,long _tv_usec) {
+		int iTest = FD_SETSIZE;
 		//初始化select超时时间
 		m_tv.tv_sec = _tv_sec;
 		m_tv.tv_usec = _tv_usec;
@@ -112,6 +114,7 @@ public:
 		if (rst > 0)
 		{
 			printf("Data is available %d\n", rst);
+			PutDataUp(vec);
 			return true;
 		}
 		else if (rst == -1)
@@ -121,8 +124,15 @@ public:
 		}
 		else
 		{
-			printf("None Data %d\n", rst);
+			//printf("None Data %d\n", rst);
 			return false;
+		}
+	}
+	void PutDataUp(std::vector<EZNetBase*> vec) {
+		//对从内核态获取到的readfds列表进行轮询
+		for (auto elem : vec) {
+			printf("%d\n", elem->GetSock());
+			elem->RecvFrom();
 		}
 	}
 	void SetMaxSock(int _MaxSock) { m_iMaxSock = _MaxSock; }
@@ -164,7 +174,7 @@ public:
 	}
 	bool Logic() 
 	{
-		if (m_selector.Do_Select(m_vecNetUnit,0, MICROSECONDS_4) == true)//存在数据
+		if (m_selector.DoSelect(m_vecNetUnit,0, MICROSECONDS_4) == true)//存在数据
 		{
 			//TODO 进行接收，推送至上层逻辑中进行处理
 
