@@ -117,8 +117,7 @@ void TestEZTime(){
 // Funcionts for Client
 //////////////////////////////////////////////////
 void TestEZNetClient(){
-	WSAData wd;
-	WSAStartup(MAKEWORD(2, 2), &wd);
+	InitNetForWin();
 	EZUDP aUDP;
 	EZUDP bUDP;
 	aUDP.InitNetSend("192.168.3.104",8888);
@@ -153,8 +152,7 @@ void TestEZNetServer(){
 	//初始化日志系统
 	Test_InitLogForServer();
 	ELOG(ERRORLOG,"Hello World!");
-	WSAData wd;
-	WSAStartup(MAKEWORD(2, 2), &wd);
+	InitNetForWin();
 	//初始化网络连接
 	EZUDP aUDP;
 	aUDP.InitNetRecv(8888);

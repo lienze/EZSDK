@@ -21,6 +21,15 @@ const int g_iMaxSendLen = 1024;
 const int g_iMaxRecvLen = 1024;
 //const int g_iMaxNetUnit = 200;
 
+bool InitNetForWin() {
+#if (defined _WIN32) || (defined _WIN64)
+	WSAData wd;
+	WSAStartup(MAKEWORD(2, 2), &wd);
+#endif
+	return true;
+}
+
+
 class EZNetBase
 {
 public:
@@ -98,7 +107,6 @@ public:
 	}
 	~EZSelector() {}
 	bool DoSelect(std::vector<EZNetBase*> &vec,long _tv_sec,long _tv_usec) {
-		int iTest = FD_SETSIZE;
 		//初始化select超时时间
 		m_tv.tv_sec = _tv_sec;
 		m_tv.tv_usec = _tv_usec;
@@ -174,12 +182,7 @@ public:
 	}
 	bool Logic() 
 	{
-		if (m_selector.DoSelect(m_vecNetUnit,0, MICROSECONDS_4) == true)//存在数据
-		{
-			//TODO 进行接收，推送至上层逻辑中进行处理
-
-		}
-		return true;
+		return m_selector.DoSelect(m_vecNetUnit, 0, MICROSECONDS_4);
 	}
 private:
 	std::vector<EZNetBase*> m_vecNetUnit;
