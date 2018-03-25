@@ -71,10 +71,11 @@ private:
 	std::map<LogType,EZLog *> LogMap;
 };//end class EZLogMan
 
-#define ELOG(__TYPE,__STR) do{\
-	auto pLogger = g_LogMan.GetLogger(__TYPE);\
-	if(pLogger)\
-		pLogger->WriteData(__STR);\
-}while(0);
+#define ELOG(__TYPE,__STR)                        \
+    do{                                           \
+        auto pLogger = g_LogMan.GetLogger(__TYPE);\
+        if(pLogger)                               \
+            pLogger->WriteData(__STR);            \
+    }while(0);
 
 }//end namespace EZ

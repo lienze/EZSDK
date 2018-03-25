@@ -9,7 +9,7 @@
     {                    \
         F.clear();       \
         F.close();       \
-    } while(0)           \
+    } while(0)
 
 //solve conflict with the define in <fileapi.h>
 #define CreateFileA CreateFile
