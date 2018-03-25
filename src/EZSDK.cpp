@@ -120,7 +120,7 @@ void TestEZNetClient(){
 	InitNetForWin();
 	EZUDP aUDP;
 	EZUDP bUDP;
-	aUDP.InitNetSend("192.168.3.104",8888);
+	aUDP.InitNetSend("192.168.3.13",8888);
 	aUDP.SendTo("Hello");
 	EZNetMan g_NetMan;
 	g_NetMan.AddUnit(&aUDP);

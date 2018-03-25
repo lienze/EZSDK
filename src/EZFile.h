@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <iostream>
 #include <fstream>
@@ -106,4 +106,41 @@ public:
 private:
 	std::fstream fout;
 };
+
+//文件夹操作
+#if (defined __APPLE__) || (defined __linux__)
+
+#elif (defined _WIN32) || (defined _WIN64)
+#include <io.h>
+#include <direct.h>
+
+//创建文件夹
+bool CreateDir(std::string _dirName) {
+	if (_mkdir(_dirName.c_str()) == -1)
+		return false;
+	return true;
+}
+
+//删除文件夹
+bool DeleteDir(std::string _dirName) {
+	if (rmdir(_dirName.c_str()) == -1)
+		return false;
+	return true;
+}
+
+//判断文件夹是否存在
+bool DirExsit(std::string _dirName) 
+{
+	if (_access(_dirName.c_str(), 0) == 0) {
+		printf("%s Exsit\n", _dirName.c_str());
+		DeleteDir(_dirName.c_str());
+	}
+	else {
+		printf("%s Not Exsit\n", _dirName.c_str());
+		CreateDir(_dirName.c_str());
+	}
+	return true;
+}
+#endif
+
 }//end namespace EZ

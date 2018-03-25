@@ -148,7 +148,6 @@ public:
 private:
 	fd_set m_rd;
 	struct timeval m_tv;
-	int m_iErr;
 	int m_iMaxSock;
 };
 
