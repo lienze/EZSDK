@@ -132,14 +132,13 @@ bool DeleteDir(std::string _dirName) {
 bool DirExsit(std::string _dirName) 
 {
 	if (_access(_dirName.c_str(), 0) == 0) {
-		printf("%s Exsit\n", _dirName.c_str());
-		DeleteDir(_dirName.c_str());
+		//printf("%s Exsit\n", _dirName.c_str());
+		return true;
 	}
 	else {
-		printf("%s Not Exsit\n", _dirName.c_str());
-		CreateDir(_dirName.c_str());
+		//printf("%s Not Exsit\n", _dirName.c_str());
+		return false;
 	}
-	return true;
 }
 #endif
 

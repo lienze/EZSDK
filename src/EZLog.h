@@ -18,7 +18,8 @@ class EZLog
 public:
 	EZLog(){}
 	~EZLog(){}
-	bool InitLog(std::string _szPath){
+	bool InitLog(std::string _szDir,std::string _szLogName){
+		std::string _szPath = _szDir + _szLogName;
 		fLog.open(_szPath,std::ios::app);
 		if(fLog.fail()){
 			printf("can not open %s\n",_szPath.c_str());

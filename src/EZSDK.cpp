@@ -51,7 +51,8 @@ void TestEZCreateFile(){
 }
 
 void TestEZDir() {
-	DirExsit("./test");
+	if (DirExsit("./test") == false)
+		CreateDir("./test");
 }
 
 void TestEZString(){
@@ -138,18 +139,24 @@ void TestEZNetClient(){
 // Funcionts for Server
 //////////////////////////////////////////////////
 void Test_InitLogForServer(){
-	EZLog *sysLog = new EZLog;
-	if(sysLog)
-		sysLog->InitLog("./Log/sys.txt");
-	EZLog *clientLog = new EZLog;
-	if(clientLog)
-		clientLog->InitLog("./Log/client.txt");
-	EZLog *errLog = new EZLog;
-	if(errLog)
-		errLog->InitLog("./Log/err.txt");
-	g_LogMan.AddLogger(sysLog,SYSLOG);
-	g_LogMan.AddLogger(clientLog,CLIENTLOG);
-	g_LogMan.AddLogger(errLog,ERRORLOG);
+	//首先确保目录存在
+	if (DirExsit("./Log") == false)
+		CreateDir("./Log");
+	if(DirExsit("./Log"))
+	{
+		EZLog *sysLog = new EZLog;
+		if (sysLog)
+			sysLog->InitLog("./Log/", "sys.txt");
+		EZLog *clientLog = new EZLog;
+		if (clientLog)
+			clientLog->InitLog("./Log/", "client.txt");
+		EZLog *errLog = new EZLog;
+		if (errLog)
+			errLog->InitLog("./Log/", "err.txt");
+		g_LogMan.AddLogger(sysLog, SYSLOG);
+		g_LogMan.AddLogger(clientLog, CLIENTLOG);
+		g_LogMan.AddLogger(errLog, ERRORLOG);
+	}
 }
 
 void TestEZNetServer(){
@@ -171,7 +178,7 @@ void TestEZNetServer(){
 
 int main(int argc,char *argv[])
 {
-	/*if(argc > 1){
+	if(argc > 1){
 		if(argc==2){//one parameter
 			if(strcmp(argv[1],"-client")==0){
 				printf("client running...\n");
@@ -182,7 +189,6 @@ int main(int argc,char *argv[])
 				TestEZNetServer();
 			}
 		}
-	}*/
-	TestEZDir();
+	}
 	return 0;
 }
