@@ -4,6 +4,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <unistd.h> //for select module
 #elif (defined _WIN32) || (defined _WIN64)
 #include <WinSock2.h>
 #include <ws2tcpip.h>
@@ -17,6 +18,8 @@
 #define MICROSECONDS	1000000				//1s
 #define MICROSECONDS_2	(MICROSECONDS/2)	//0.5s
 #define MICROSECONDS_4	(MICROSECONDS/4)	//0.25s
+#define MICROSECONDS_5	(MICROSECONDS/5)	//0.2s
+#define MICROSECONDS_10	(MICROSECONDS/10)	//0.01s
 
 namespace EZ {
 
@@ -142,7 +145,7 @@ public:
 	void PutDataUp(std::vector<EZNetBase*> vec) {
 		//对从内核态获取到的readfds列表进行轮询
 		for (auto elem : vec) {
-			printf("%d\n", elem->GetSock());
+			printf("current socket:%d\n", elem->GetSock());
 			elem->RecvFrom();
 		}
 	}
@@ -182,8 +185,7 @@ public:
 		}
 		return -1;
 	}
-	bool Logic() 
-	{
+	bool Logic(){
 		return m_selector.DoSelect(m_vecNetUnit, 0, MICROSECONDS_4);
 	}
 private:
