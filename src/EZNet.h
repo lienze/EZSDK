@@ -13,7 +13,10 @@
 #include <cstring>
 #include <vector>
 
-#include "EZDef.h"
+
+#define MICROSECONDS	1000000				//1s
+#define MICROSECONDS_2	(MICROSECONDS/2)	//0.5s
+#define MICROSECONDS_4	(MICROSECONDS/4)	//0.25s
 
 namespace EZ {
 

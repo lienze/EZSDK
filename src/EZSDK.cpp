@@ -4,7 +4,6 @@
 #include "EZTime.h"
 #include "EZNet.h"
 #include "EZLog.h"
-#include "EZDef.h"
 
 using namespace EZ;
 

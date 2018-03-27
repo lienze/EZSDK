@@ -123,7 +123,7 @@ bool CreateDir(std::string _dirName) {
 
 //删除文件夹
 bool DeleteDir(std::string _dirName) {
-	if (rmdir(_dirName.c_str()) == -1)
+	if (_rmdir(_dirName.c_str()) == -1)
 		return false;
 	return true;
 }
