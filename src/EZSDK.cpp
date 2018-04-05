@@ -171,7 +171,8 @@ void TestEZNetServer(){
 	//程序主循环
 	bool bStop = false;
 	while (!bStop) {
-		g_NetMan.Logic();
+		g_NetMan.RecLogic();
+		g_NetMan.SendLogic();
 	}
 }
 

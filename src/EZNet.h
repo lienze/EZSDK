@@ -13,6 +13,7 @@
 
 #include <cstring>
 #include <vector>
+#include <deque>
 
 
 #define MICROSECONDS	1000000				//1s
@@ -35,6 +36,22 @@ bool InitNetForWin() {
 	return true;
 }
 
+//所有数据包的基础结构
+struct PackBase {
+	byte m_iType;
+};
+
+//发送数据包结构
+struct SendPack :public PackBase {
+	int iSize;
+	char _SendData[1];
+};
+
+//接收数据包结构
+struct RecvPack :public PackBase {
+	int iSize;
+	char _RecvData[1];
+};
 
 class EZNetBase
 {
@@ -53,6 +70,8 @@ public:
 		m_sockaddrRecv.sin_family = AF_INET;
 		memset(m_SendBuff,0,sizeof(m_SendBuff));
 		memset(m_RecvBuff,0,sizeof(m_RecvBuff));
+		m_SendDataQueue.clear();
+		m_RecvDataQueue.clear();
 	}
 	~EZUDP(){}
 public:
@@ -83,8 +102,22 @@ public:
 		memset(m_RecvBuff,0,sizeof(m_RecvBuff));
 		socklen_t len = sizeof(m_sockaddrRecv);
 		recvfrom(m_sock,m_RecvBuff,g_iMaxRecvLen,0,(struct sockaddr *)&m_sockaddrRecv,&len);
+#ifdef DEBUG
 		printf("recv:%s from_addr:%s:%d\n",m_RecvBuff,inet_ntoa(m_sockaddrRecv.sin_addr),m_sockaddrRecv.sin_port);
-		return true;
+#endif
+		//在堆中申请一块空间用来存放接收数据
+		RecvPack *_pRPack = new RecvPack();
+		if (_pRPack) {
+			//接收数据初始化
+			_pRPack->m_iType = 0;
+			_pRPack->iSize = 0;
+			char *_pTmp = new char[strlen(m_RecvBuff)];
+			strncpy(_pRPack->_RecvData, _pTmp, strlen(_pTmp));
+			//交给队列进行统一管理
+			m_RecvDataQueue.push_back(_pRPack);
+			return true;
+		}
+		return false;
 	}
 	virtual int GetSock() { return m_sock; }
 private:
@@ -93,6 +126,8 @@ private:
 	struct sockaddr_in m_sockaddrRecv;
 	char m_SendBuff[g_iMaxSendLen];
 	char m_RecvBuff[g_iMaxRecvLen];
+	std::deque<SendPack*> m_SendDataQueue;//存储发送数据的指针
+	std::deque<RecvPack*> m_RecvDataQueue;//存储接收数据的指针
 };
 
 class EZTCP:public EZNetBase
@@ -185,8 +220,11 @@ public:
 		}
 		return -1;
 	}
-	bool Logic(){
+	bool RecLogic(){
 		return m_selector.DoSelect(m_vecNetUnit, 0, MICROSECONDS_4);
+	}
+	bool SendLogic() {
+		return true;
 	}
 private:
 	std::vector<EZNetBase*> m_vecNetUnit;
