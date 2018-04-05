@@ -4,11 +4,11 @@
 #include <fstream>
 #include <string>
 
-#define OFSTREAMCLOSE(F) \
-    do                   \
-    {                    \
-        F.clear();       \
-        F.close();       \
+#define OFSTREAMCLOSE(__FILE) \
+    do                        \
+    {                         \
+        __FILE.clear();       \
+        __FILE.close();       \
     } while(0)
 
 //solve conflict with the define in <fileapi.h>
