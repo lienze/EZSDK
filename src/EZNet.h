@@ -102,10 +102,12 @@ public:
 		memset(m_RecvBuff,0,sizeof(m_RecvBuff));
 		socklen_t len = sizeof(m_sockaddrRecv);
 		recvfrom(m_sock,m_RecvBuff,g_iMaxRecvLen,0,(struct sockaddr *)&m_sockaddrRecv,&len);
-#ifdef DEBUG
+#ifdef _DEBUG
 		printf("recv:%s from_addr:%s:%d\n",m_RecvBuff,inet_ntoa(m_sockaddrRecv.sin_addr),m_sockaddrRecv.sin_port);
 #endif
-		//在堆中申请一块空间用来存放接收数据
+		//在堆中申请一块空间用来存放接收数据，待后续处理
+		//TODO:暂时使用系统维护的空间（易在堆中产生碎片）
+		//后续需要修改为内存池的管理方式并进行手动管理
 		RecvPack *_pRPack = new RecvPack();
 		if (_pRPack) {
 			//接收数据初始化
@@ -126,8 +128,8 @@ private:
 	struct sockaddr_in m_sockaddrRecv;
 	char m_SendBuff[g_iMaxSendLen];
 	char m_RecvBuff[g_iMaxRecvLen];
-	std::deque<SendPack*> m_SendDataQueue;//存储发送数据的指针
-	std::deque<RecvPack*> m_RecvDataQueue;//存储接收数据的指针
+	std::deque<SendPack*> m_SendDataQueue;//存储指向发送数据的指针
+	std::deque<RecvPack*> m_RecvDataQueue;//存储指向接收数据的指针
 };
 
 class EZTCP:public EZNetBase
@@ -163,6 +165,8 @@ public:
 		if (rst > 0)
 		{
 			printf("Data is available %d\n", rst);
+			//数据向上层进行分发
+			//TODO:后续需要对分发模式进行优化
 			PutDataUp(vec);
 			return true;
 		}
@@ -220,10 +224,16 @@ public:
 		}
 		return -1;
 	}
+	//完成接收并将数据推送到上层等待处理
 	bool RecLogic(){
 		return m_selector.DoSelect(m_vecNetUnit, 0, MICROSECONDS_4);
 	}
+	//将上层数据移交至发送队列后发送
 	bool SendLogic() {
+		return true;
+	}
+	//针对每个连接进行相应的逻辑处理
+	bool Logic() {
 		return true;
 	}
 private:
