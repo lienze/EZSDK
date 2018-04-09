@@ -1,5 +1,6 @@
 #pragma once
 
+//处理不同平台头文件差异
 #if (defined __APPLE__) || (defined __linux__)
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -11,11 +12,19 @@
 #pragma comment(lib,"Ws2_32.lib")
 #endif
 
+//标准库
 #include <cstring>
 #include <vector>
 #include <deque>
 
+//用于处理不同平台数据类型
+#if (defined __APPLE__) || (defined __linux__)
+#define byte unsigned char
+#elif (defined _WIN32) || (defined _WIN64)
 
+#endif
+
+//宏定义
 #define MICROSECONDS	1000000				//1s
 #define MICROSECONDS_2	(MICROSECONDS/2)	//0.5s
 #define MICROSECONDS_4	(MICROSECONDS/4)	//0.25s
