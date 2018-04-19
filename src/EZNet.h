@@ -69,6 +69,7 @@ public:
 	virtual ~EZNetBase(){}
 	virtual int GetSock() = 0;
 	virtual bool RecvFrom() = 0;
+	virtual std::deque<RecvPack*> *GetRecvQueue() = 0;
 };
 class EZUDP:public EZNetBase
 {
@@ -115,15 +116,15 @@ public:
 		printf("recv:%s from_addr:%s:%d\n",m_RecvBuff,inet_ntoa(m_sockaddrRecv.sin_addr),m_sockaddrRecv.sin_port);
 #endif
 		//在堆中申请一块空间用来存放接收数据，待后续处理
-		//TODO:暂时使用系统维护的空间（易在堆中产生碎片）
+		//TODO:暂时使用系统维护的堆空间（易在堆中产生碎片）
 		//后续需要修改为内存池的管理方式并进行手动管理
 		RecvPack *_pRPack = new RecvPack();
 		if (_pRPack) {
 			//接收数据初始化
 			_pRPack->m_iType = 0;
 			_pRPack->iSize = 0;
-			char *_pTmp = new char[strlen(m_RecvBuff)];
-			strncpy(_pRPack->_RecvData, _pTmp, strlen(_pTmp));
+			//TODO:此处可能会出问题，待后续修改
+			strncpy(_pRPack->_RecvData, m_RecvBuff, strlen(m_RecvBuff)+1);
 			//交给队列进行统一管理
 			m_RecvDataQueue.push_back(_pRPack);
 			return true;
@@ -131,6 +132,9 @@ public:
 		return false;
 	}
 	virtual int GetSock() { return m_sock; }
+	virtual std::deque<RecvPack*> *GetRecvQueue(){
+		return &m_RecvDataQueue;
+	}
 private:
 	int m_sock;
 	struct sockaddr_in m_sockaddrSend;
@@ -205,7 +209,7 @@ private:
 	int m_iMaxSock;
 };
 
-class EZNetMan	//Net Manager
+class EZNetMan	//网络连接管理器
 {
 public:
 	EZNetMan(){}
@@ -243,6 +247,11 @@ public:
 	}
 	//针对每个连接进行相应的逻辑处理
 	bool Logic() {
+		for(auto it : m_vecNetUnit){
+			if(it && it->GetRecvQueue() && !(it->GetRecvQueue()->empty())){
+				printf("front Data:%s\n",it->GetRecvQueue()->front()->_RecvData);
+			}
+		}
 		return true;
 	}
 private:
