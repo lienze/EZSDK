@@ -1,5 +1,13 @@
 #pragma once
 
+//标准库
+#include <cstring>
+#include <vector>
+#include <deque>
+#include <cassert>
+
+namespace EZ {
+
 //处理不同平台头文件差异
 #if (defined __APPLE__) || (defined __linux__)
 #include <sys/socket.h>
@@ -11,11 +19,6 @@
 #include <ws2tcpip.h>
 #pragma comment(lib,"Ws2_32.lib")
 #endif
-
-//标准库
-#include <cstring>
-#include <vector>
-#include <deque>
 
 //用于处理不同平台数据类型
 #if (defined __APPLE__) || (defined __linux__)
@@ -30,8 +33,6 @@
 #define MICROSECONDS_4	(MICROSECONDS/4)	//0.25s
 #define MICROSECONDS_5	(MICROSECONDS/5)	//0.2s
 #define MICROSECONDS_10	(MICROSECONDS/10)	//0.01s
-
-namespace EZ {
 
 const int g_iMaxSendLen = 1024;
 const int g_iMaxRecvLen = 1024;
