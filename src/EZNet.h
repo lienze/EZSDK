@@ -251,6 +251,8 @@ public:
 		for(auto it : m_vecNetUnit){
 			if(it && it->GetRecvQueue() && !(it->GetRecvQueue()->empty())){
 				printf("front Data:%s\n",it->GetRecvQueue()->front()->_RecvData);
+				//队列的第一个数据弹出
+				it->GetRecvQueue()->pop_front();
 			}
 		}
 		return true;
