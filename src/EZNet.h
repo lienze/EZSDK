@@ -76,6 +76,8 @@ class EZUDP:public EZNetBase
 {
 public:
 	EZUDP(){
+		m_bInitSend = false;
+		m_bInitRecv = false;
 		m_sock = socket(AF_INET, SOCK_DGRAM, 0);
 		m_sockaddrSend.sin_family = AF_INET;//IPv4
 		m_sockaddrRecv.sin_family = AF_INET;
@@ -86,27 +88,39 @@ public:
 	}
 	~EZUDP(){}
 public:
+	enum eSendInfo{
+		eSendInfo_Success    =  0,
+		eSendInfo_HasNotInit = -1,
+		eSendInfo_sendtoErr  = -2,
+	};
 	bool InitNetSend(const char * _pAddr
 					,const unsigned short _usPort){
+		m_bInitSend = true;
 		m_sockaddrSend.sin_port = htons(_usPort);
 		m_sockaddrSend.sin_addr.s_addr = inet_addr(_pAddr);
 		return true;
 	}
+	enum eRecvInfo{
+		eRecvInfo_Success    =  0,
+	};
 	bool InitNetRecv(const unsigned short _usPort){
+		m_bInitRecv = true;
 		m_sockaddrRecv.sin_port = htons(_usPort);
 		m_sockaddrRecv.sin_addr.s_addr = htonl(INADDR_ANY);
 		bind(m_sock,(struct sockaddr*)&m_sockaddrRecv,sizeof(m_sockaddrRecv));
 		return true;
 	}
-	bool SendTo(const char* pBuf){
+	int SendTo(const char* pBuf){
+		if(!m_bInitSend)
+			return eSendInfo_HasNotInit;
 		assert(strlen(pBuf)<=g_iMaxSendLen);
 		memset(m_SendBuff,0,sizeof(m_SendBuff));
 		//memcpy(m_SendBuff,pBuf,sizeof(m_SendBuff));
 		strncpy(m_SendBuff,pBuf,strlen(pBuf));
 		int ret = sendto(m_sock,m_SendBuff,sizeof(m_SendBuff),0,(struct sockaddr *)&m_sockaddrSend,sizeof(m_sockaddrSend));
 		if(ret == -1)
-			return false;
-		return true;
+			return eSendInfo_sendtoErr;
+		return eSendInfo_Success;
 	}
 	virtual bool RecvFrom(){
 		//assert(strlen(pBuff)<=g_iMaxRecvLen);
@@ -140,6 +154,8 @@ private:
 	int m_sock;
 	struct sockaddr_in m_sockaddrSend;
 	struct sockaddr_in m_sockaddrRecv;
+	bool m_bInitSend;//标识是否进行过发送初始化操作
+	bool m_bInitRecv;//标识是否进行过接收初始化操作
 	char m_SendBuff[g_iMaxSendLen];
 	char m_RecvBuff[g_iMaxRecvLen];
 	std::deque<SendPack*> m_SendDataQueue;//存储指向发送数据的指针
@@ -250,6 +266,7 @@ public:
 	bool Logic() {
 		for(auto it : m_vecNetUnit){
 			if(it && it->GetRecvQueue() && !(it->GetRecvQueue()->empty())){
+				//TODO:目前仅对数据链接接收到的数据进行打印，后续要继续向上层推送
 				printf("front Data:%s\n",it->GetRecvQueue()->front()->_RecvData);
 				//队列的第一个数据弹出
 				it->GetRecvQueue()->pop_front();
