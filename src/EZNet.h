@@ -69,7 +69,7 @@ public:
 	EZNetBase(){}
 	virtual ~EZNetBase(){}
 	virtual int GetSock() = 0;
-	virtual bool RecvFrom() = 0;
+	virtual int RecvFrom() = 0;
 	virtual std::deque<RecvPack*> *GetRecvQueue() = 0;
 };
 class EZUDP:public EZNetBase
@@ -102,6 +102,8 @@ public:
 	}
 	enum eRecvInfo{
 		eRecvInfo_Success    =  0,
+		eRecvInfo_HasNotInit = -1,
+		eRecvInfo_NewPackErr  = -2,
 	};
 	bool InitNetRecv(const unsigned short _usPort){
 		m_bInitRecv = true;
@@ -122,7 +124,9 @@ public:
 			return eSendInfo_sendtoErr;
 		return eSendInfo_Success;
 	}
-	virtual bool RecvFrom(){
+	virtual int RecvFrom(){
+		if(!m_bInitRecv)
+			return eRecvInfo_HasNotInit;
 		//assert(strlen(pBuff)<=g_iMaxRecvLen);
 		memset(m_RecvBuff,0,sizeof(m_RecvBuff));
 		socklen_t len = sizeof(m_sockaddrRecv);
@@ -142,9 +146,9 @@ public:
 			strncpy(_pRPack->_RecvData, m_RecvBuff, strlen(m_RecvBuff)+1);
 			//交给队列进行统一管理
 			m_RecvDataQueue.push_back(_pRPack);
-			return true;
+			return eRecvInfo_Success;
 		}
-		return false;
+		return eRecvInfo_NewPackErr;
 	}
 	virtual int GetSock() { return m_sock; }
 	virtual std::deque<RecvPack*> *GetRecvQueue(){
@@ -268,7 +272,9 @@ public:
 			if(it && it->GetRecvQueue() && !(it->GetRecvQueue()->empty())){
 				//TODO:目前仅对数据链接接收到的数据进行打印，后续要继续向上层推送
 				printf("front Data:%s\n",it->GetRecvQueue()->front()->_RecvData);
-				//队列的第一个数据弹出
+				//回收指针所指向的在堆内的空间
+				delete[] it->GetRecvQueue()->front();
+				//队列的第一个数据指针弹出
 				it->GetRecvQueue()->pop_front();
 			}
 		}
