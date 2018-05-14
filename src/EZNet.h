@@ -249,7 +249,7 @@ public:
 		}
 		return false;
 	}
-	unsigned int FindUnitPos(EZNetBase *_p){
+	int FindUnitPos(EZNetBase *_p){
 		unsigned int _iPos = 0;
 		for (auto it : m_vecNetUnit) {
 			if (it == _p)

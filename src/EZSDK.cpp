@@ -131,7 +131,11 @@ void TestEZNetClient(){
 	g_NetMan.AddUnit(&bUDP);
 	int _pos=0;
 	_pos=g_NetMan.FindUnitPos(&bUDP);
-	printf("g_NetMan == %d\n",_pos);
+	std::string str_send;
+	while(getline(std::cin,str_send)){
+		printf("%s\n",str_send.c_str());
+		aUDP.SendTo(str_send.c_str());
+	}
 }
 
 //////////////////////////////////////////////////
@@ -166,6 +170,7 @@ void TestEZNetServer(){
 	//初始化网络连接
 	EZUDP aUDP;
 	aUDP.InitNetRecv(8888);
+	//初始化网络管理器
 	EZNetMan g_NetMan;
 	g_NetMan.AddUnit(&aUDP);
 	//程序主循环
