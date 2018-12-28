@@ -101,6 +101,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EZFile.cpp" />
     <ClCompile Include="EZSDK.cpp" />
   </ItemGroup>
   <ItemGroup>
