@@ -104,6 +104,7 @@
     <ClCompile Include="EZFile.cpp" />
     <ClCompile Include="EZLog.cpp" />
     <ClCompile Include="EZSDK.cpp" />
+    <ClCompile Include="EZString.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EZFile.h" />
