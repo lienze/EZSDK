@@ -102,6 +102,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="EZFile.cpp" />
+    <ClCompile Include="EZLog.cpp" />
     <ClCompile Include="EZSDK.cpp" />
   </ItemGroup>
   <ItemGroup>
