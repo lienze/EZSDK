@@ -103,6 +103,7 @@
   <ItemGroup>
     <ClCompile Include="EZFile.cpp" />
     <ClCompile Include="EZLog.cpp" />
+    <ClCompile Include="EZMath.cpp" />
     <ClCompile Include="EZNet.cpp" />
     <ClCompile Include="EZSDK.cpp" />
     <ClCompile Include="EZString.cpp" />

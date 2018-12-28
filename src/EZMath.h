@@ -4,7 +4,7 @@ namespace EZ {
 class EZMath
 {
 public:
-	EZMath(){}
-	~EZMath(){}
+	EZMath();
+	~EZMath();
 };
 }//end namespace EZ
