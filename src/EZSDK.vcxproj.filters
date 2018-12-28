@@ -30,6 +30,9 @@
     <ClCompile Include="EZNet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EZTime.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EZFile.h">
