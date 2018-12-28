@@ -31,7 +31,6 @@ namespace EZ {
 		return basic_str;
 	}
 
-
 	EZStringList::EZStringList() {
 		pHead = pCurr = pTail = NULL;
 		iNodeNum = 0;

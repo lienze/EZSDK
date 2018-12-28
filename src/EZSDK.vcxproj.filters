@@ -27,6 +27,9 @@
     <ClCompile Include="EZString.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EZNet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EZFile.h">
