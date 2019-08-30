@@ -44,3 +44,7 @@ Log
 
 # editor
 *.bak
+
+# cscope and tags
+cscope*
+tags
