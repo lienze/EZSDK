@@ -48,3 +48,7 @@ Log
 # cscope and tags
 cscope*
 tags
+
+# idea
+.idea
+cmake-build-debug
