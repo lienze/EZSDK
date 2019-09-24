@@ -60,17 +60,17 @@ namespace EZ {
 #ifdef _DEBUG
 		printf("recv:%s from_addr:%s:%d\n", m_RecvBuff, inet_ntoa(m_sockaddrRecv.sin_addr), m_sockaddrRecv.sin_port);
 #endif
-		//ÔÚ¶ÑÖĞÉêÇëÒ»¿é¿Õ¼äÓÃÀ´´æ·Å½ÓÊÕÊı¾İ£¬´ıºóĞø´¦Àí
-		//TODO:ÔİÊ±Ê¹ÓÃÏµÍ³Î¬»¤µÄ¶Ñ¿Õ¼ä£¨Ò×ÔÚ¶ÑÖĞ²úÉúËéÆ¬£©
-		//ºóĞøĞèÒªĞŞ¸ÄÎªÄÚ´æ³ØµÄ¹ÜÀí·½Ê½²¢½øĞĞÊÖ¶¯¹ÜÀí
+		// åœ¨å †ä¸­ç”³è¯·ä¸€å—ç©ºé—´ç”¨æ¥å­˜æ”¾æ¥æ”¶æ•°æ®ï¼Œå¾…åç»­å¤„ç†
+		// TODO:æš‚æ—¶ä½¿ç”¨ç³»ç»Ÿç»´æŠ¤çš„å †ç©ºé—´ï¼ˆæ˜“åœ¨å †ä¸­äº§ç”Ÿç¢ç‰‡ï¼‰
+		// åç»­éœ€è¦ä¿®æ”¹ä¸ºå†…å­˜æ± çš„ç®¡ç†æ–¹å¼å¹¶è¿›è¡Œæ‰‹åŠ¨ç®¡ç†
 		RecvPack *_pRPack = new RecvPack();
 		if (_pRPack) {
-			//½ÓÊÕÊı¾İ³õÊ¼»¯
+			// æ¥æ”¶æ•°æ®åˆå§‹åŒ–
 			_pRPack->m_iType = 0;
 			_pRPack->iSize = 0;
-			//TODO:´Ë´¦¿ÉÄÜ»á³öÎÊÌâ£¬´ıºóĞøĞŞ¸Ä
+			// TODO:æ­¤å¤„å¯èƒ½ä¼šå‡ºé—®é¢˜ï¼Œå¾…åç»­ä¿®æ”¹
 			strncpy(_pRPack->_RecvData, m_RecvBuff, strlen(m_RecvBuff) + 1);
-			//½»¸ø¶ÓÁĞ½øĞĞÍ³Ò»¹ÜÀí
+			// äº¤ç»™é˜Ÿåˆ—è¿›è¡Œç»Ÿä¸€ç®¡ç†
 			m_RecvDataQueue.push_back(_pRPack);
 			return eRecvInfo_Success;
 		}
@@ -91,10 +91,10 @@ namespace EZ {
 	}
 	EZSelector::~EZSelector() {}
 	bool EZSelector::DoSelect(std::vector<EZNetBase*> &vec, long _tv_sec, long _tv_usec) {
-		//³õÊ¼»¯select³¬Ê±Ê±¼ä
+		// åˆå§‹åŒ–selectè¶…æ—¶æ—¶é—´
 		m_tv.tv_sec = _tv_sec;
 		m_tv.tv_usec = _tv_usec;
-		//³õÊ¼»¯readfdsÁĞ±í
+		// åˆå§‹åŒ–readfdsåˆ—è¡¨
 		FD_ZERO(&m_rd);
 		m_iMaxSock = 0;
 		for (auto& elem : vec) {
@@ -106,8 +106,8 @@ namespace EZ {
 		if (rst > 0)
 		{
 			printf("Data is available %d\n", rst);
-			//Êı¾İÏòÉÏ²ã½øĞĞ·Ö·¢
-			//TODO:ºóĞøĞèÒª¶Ô·Ö·¢Ä£Ê½½øĞĞÓÅ»¯
+			// æ•°æ®å‘ä¸Šå±‚è¿›è¡Œåˆ†å‘
+			// TODO:åç»­éœ€è¦å¯¹åˆ†å‘æ¨¡å¼è¿›è¡Œä¼˜åŒ–
 			PutDataUp(vec);
 			return true;
 		}
@@ -123,7 +123,7 @@ namespace EZ {
 		}
 	}
 	void EZSelector::PutDataUp(std::vector<EZNetBase*> vec) {
-		//¶Ô´ÓÄÚºËÌ¬»ñÈ¡µ½µÄreadfdsÁĞ±í½øĞĞÂÖÑ¯
+		// å¯¹ä»å†…æ ¸æ€è·å–åˆ°çš„readfdsåˆ—è¡¨è¿›è¡Œè½®è¯¢
 		for (auto elem : vec) {
 			printf("current socket:%d\n", elem->GetSock());
 			elem->RecvFrom();
@@ -157,23 +157,23 @@ namespace EZ {
 		}
 		return -1;
 	}
-	//Íê³É½ÓÊÕ²¢½«Êı¾İÍÆËÍµ½ÉÏ²ãµÈ´ı´¦Àí
+	// å®Œæˆæ¥æ”¶å¹¶å°†æ•°æ®æ¨é€åˆ°ä¸Šå±‚ç­‰å¾…å¤„ç†
 	bool EZNetMan::RecLogic() {
 		return m_selector.DoSelect(m_vecNetUnit, 0, MICROSECONDS_4);
 	}
-	//½«ÉÏ²ãÊı¾İÒÆ½»ÖÁ·¢ËÍ¶ÓÁĞºó·¢ËÍ
+	// å°†ä¸Šå±‚æ•°æ®ç§»äº¤è‡³å‘é€é˜Ÿåˆ—åå‘é€
 	bool EZNetMan::SendLogic() {
 		return true;
 	}
-	//Õë¶ÔÃ¿¸öÁ¬½Ó½øĞĞÏàÓ¦µÄÂß¼­´¦Àí
+	// é’ˆå¯¹æ¯ä¸ªè¿æ¥è¿›è¡Œç›¸åº”çš„é€»è¾‘å¤„ç†
 	bool EZNetMan::Logic() {
 		for (auto it : m_vecNetUnit) {
 			if (it && it->GetRecvQueue() && !(it->GetRecvQueue()->empty())) {
-				//TODO:Ä¿Ç°½ö¶ÔÊı¾İÁ´½Ó½ÓÊÕµ½µÄÊı¾İ½øĞĞ´òÓ¡£¬ºóĞøÒª¼ÌĞøÏòÉÏ²ãÍÆËÍ
+				// TODO:ç›®å‰ä»…å¯¹æ•°æ®é“¾æ¥æ¥æ”¶åˆ°çš„æ•°æ®è¿›è¡Œæ‰“å°ï¼Œåç»­è¦ç»§ç»­å‘ä¸Šå±‚æ¨é€
 				printf("front Data:%s\n", it->GetRecvQueue()->front()->_RecvData);
-				//»ØÊÕÖ¸ÕëËùÖ¸ÏòµÄÔÚ¶ÑÄÚµÄ¿Õ¼ä
+				// å›æ”¶æŒ‡é’ˆæ‰€æŒ‡å‘çš„åœ¨å †å†…çš„ç©ºé—´
 				delete[] it->GetRecvQueue()->front();
-				//¶ÓÁĞµÄµÚÒ»¸öÊı¾İÖ¸Õëµ¯³ö
+				// é˜Ÿåˆ—çš„ç¬¬ä¸€ä¸ªæ•°æ®æŒ‡é’ˆå¼¹å‡º
 				it->GetRecvQueue()->pop_front();
 			}
 		}

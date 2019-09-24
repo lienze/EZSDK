@@ -64,29 +64,29 @@ namespace EZ {
 	}
 
 
-	//ÎÄ¼ş¼Ğ²Ù×÷
+	// æ–‡ä»¶å¤¹æ“ä½œ
 	#if (defined __APPLE__) || (defined __linux__)
 	#include <sys/stat.h>
 	#include <unistd.h>
-	//´´½¨ÎÄ¼ş¼Ğ for linux
+	// åˆ›å»ºæ–‡ä»¶å¤¹ for linux
 	bool CreateDir(std::string _dirName) {
-		//TODO: Ä¿Ç°È¨ÏŞÏÈÉèÖÃÎª777£¬ĞèÒª½«È¨ÏŞĞŞ¸ÄÎª²ÎÊı´«Èë
+		//TODO: ç›®å‰æƒé™å…ˆè®¾ç½®ä¸º777ï¼Œéœ€è¦å°†æƒé™ä¿®æ”¹ä¸ºå‚æ•°ä¼ å…¥
 		if (mkdir(_dirName.c_str(), 0777) == -1)
 			return false;
 		return true;
 	}
 
-	//É¾³ıÎÄ¼ş¼Ğ for linux
+	// åˆ é™¤æ–‡ä»¶å¤¹ for linux
 	bool DeleteDir(std::string _dirName) {
-		//TODO: ÓÉÓÚlinuxÈ¨ÏŞÎÊÌâ£¬Ö»ÔÊĞíÉ¾³ı¿ÕÄ¿Â¼
-		//ËùÒÔ´Ë´¦Ó¦ĞŞ¸ÄÎªµİ¹éÉ¾³ıÄ¿Â¼ÏÂµÄËùÓĞÎÄ¼şºóÔÙ
-		//É¾³ıËùÒªÉ¾³ıµÄÎÄ¼ş¼Ğ
+		//TODO: ç”±äºlinuxæƒé™é—®é¢˜ï¼Œåªå…è®¸åˆ é™¤ç©ºç›®å½•
+		//æ‰€ä»¥æ­¤å¤„åº”ä¿®æ”¹ä¸ºé€’å½’åˆ é™¤ç›®å½•ä¸‹çš„æ‰€æœ‰æ–‡ä»¶åå†
+		//åˆ é™¤æ‰€è¦åˆ é™¤çš„æ–‡ä»¶å¤¹
 		if (rmdir(_dirName.c_str()) == -1)
 			return false;
 		return true;
 	}
 
-	//ÅĞ¶ÏÎÄ¼ş¼ĞÊÇ·ñ´æÔÚ for linux
+	// åˆ¤æ–­æ–‡ä»¶å¤¹æ˜¯å¦å­˜åœ¨ for linux
 	bool DirExsit(std::string _dirName)
 	{
 		if (access(_dirName.c_str(), 0) == 0) {
@@ -102,21 +102,21 @@ namespace EZ {
 	#include <io.h>
 	#include <direct.h>
 
-	//´´½¨ÎÄ¼ş¼Ğ for win
+	// åˆ›å»ºæ–‡ä»¶å¤¹ for win
 	bool CreateDir(std::string _dirName) {
 		if (_mkdir(_dirName.c_str()) == -1)
 			return false;
 		return true;
 	}
 
-	//É¾³ıÎÄ¼ş¼Ğ for win
+	// åˆ é™¤æ–‡ä»¶å¤¹ for win
 	bool DeleteDir(std::string _dirName) {
 		if (_rmdir(_dirName.c_str()) == -1)
 			return false;
 		return true;
 	}
 
-	//ÅĞ¶ÏÎÄ¼ş¼ĞÊÇ·ñ´æÔÚ for win
+	// åˆ¤æ–­æ–‡ä»¶å¤¹æ˜¯å¦å­˜åœ¨ for win
 	bool DirExsit(std::string _dirName)
 	{
 		if (_access(_dirName.c_str(), 0) == 0) {
