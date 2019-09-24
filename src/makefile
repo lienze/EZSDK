@@ -1,6 +1,6 @@
 CC = g++
 CFLAGS = -std=c++11 #-DNDEBUG
-OBJS = EZSDK.o
+OBJS = EZSDK.o EZFile.o
 TARGET = EZSDK
 RM = rm -f
 
