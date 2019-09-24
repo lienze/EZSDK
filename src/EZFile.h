@@ -38,8 +38,8 @@ public:
 class EZReadFile:public EZFileBase
 {
 public:
-	EZReadFile() {};
-	~EZReadFile() {};
+	EZReadFile(){}
+	~EZReadFile(){}
 	FileRetType FileOpen(std::string _path);
 	bool FileClose();
 	void GetLine(std::string &_szTmp);
@@ -53,8 +53,8 @@ private:
 class EZSaveFile:public EZFileBase
 {
 public:
-	EZSaveFile() {};
-	~EZSaveFile() {};
+	EZSaveFile(){}
+	~EZSaveFile(){}
 	FileRetType FileOpen(std::string _path);
 	bool FileClose();
 	void SaveLine(std::string &_szTmp);

@@ -29,7 +29,12 @@ void TestEZReadFile() {
 	}
 }
 
-void TestEZSaveFile(){
+int main(){
+	TestEZReadFile();
+	return 0;
+}
+
+/*void TestEZSaveFile(){
 	EZSaveFile fFile;
 	int iRet = fFile.FileOpen("./test.txt");
 	if (iRet == 1)
@@ -198,3 +203,4 @@ int main(int argc,char *argv[])
 	}
 	return 0;
 }
+*/
