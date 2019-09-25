@@ -11,8 +11,11 @@
         __FILE.close();       \
     } while(0)
 
+
+#if (defined _WIN32) || (defined _WIN64)
 //solve conflict with the define in <fileapi.h>
 #define CreateFileA CreateFile
+#endif
 
 namespace EZ{
 
