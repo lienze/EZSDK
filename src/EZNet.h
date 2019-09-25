@@ -5,6 +5,7 @@
 #include <vector>
 #include <deque>
 #include <cassert>
+#include <cstdio>
 
 namespace EZ {
 

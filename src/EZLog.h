@@ -1,9 +1,9 @@
 #pragma once
 
 #include <fstream>
-#include <string>
 #include <ctime>
 #include <map>
+#include <cstring>
 
 #define ERRORLOG  EZ::LogType::ERR
 #define CLIENTLOG EZ::LogType::CLIENT
