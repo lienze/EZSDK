@@ -1,5 +1,5 @@
 #!/bin/bash
-cd ../src/
+cd ../
 path=`pwd`
 echo "rebuild path:"$path
 files=$(ls $path)
