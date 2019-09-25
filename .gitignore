@@ -52,3 +52,6 @@ tags
 # idea
 .idea
 cmake-build-debug
+
+# test folder
+test/TestFile
