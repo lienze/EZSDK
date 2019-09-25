@@ -3,8 +3,8 @@ CFLAGS = -std=c++11#-DNDEBUG
 OBJS = TestFile.o
 TARGET = TestFile
 RM = rm -f
-LIB_PATH = -L ../src
-LIB_INC = -I ../src
+LIB_PATH = -L ../../src
+LIB_INC = -I ../../src
 LIBS = -lez
 
 # link
