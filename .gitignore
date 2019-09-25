@@ -55,3 +55,7 @@ cmake-build-debug
 
 # test folder
 test/TestFile/TestFile
+
+# bin folder
+bin/dist.tar.gz
+bin/dist/
