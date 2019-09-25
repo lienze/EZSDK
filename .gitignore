@@ -54,4 +54,4 @@ tags
 cmake-build-debug
 
 # test folder
-test/TestFile
+test/TestFile/TestFile
