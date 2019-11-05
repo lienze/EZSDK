@@ -2,9 +2,10 @@
 
 namespace EZ {
 
-	EZTime::EZTime() {
-	}
-	EZTime::~EZTime() {}
-	}
+EZSort::EZSort() {
+}
+
+EZSort::~EZSort() {
+}
 
 }//end namespace EZ
